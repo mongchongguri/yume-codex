@@ -1,0 +1,8 @@
+.git/
+.idea/
+node_modules/
+npm-debug.log*
+*.tgz
+.npm-cache/
+.npm-cache-pack/
+.tmp*/

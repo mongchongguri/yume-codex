@@ -1,0 +1,33 @@
+{
+  "name": "yume-codex",
+  "version": "0.1.0",
+  "description": "Codex harness engineering templates and CLI initializer.",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "yume-codex": "bin/yume-codex.js"
+  },
+  "files": [
+    "AGENTS.md",
+    ".codex/**/*",
+    "bin/**/*",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "check": "node bin/yume-codex.js doctor .",
+    "smoke": "node bin/yume-codex.js --help"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mongchongguri/yume-codex.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mongchongguri/yume-codex/issues"
+  },
+  "homepage": "https://github.com/mongchongguri/yume-codex#readme"
+}
