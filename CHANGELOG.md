@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Release expanded harness rules, stack decisions, design references, workflow folders, and bundled context workflow skills.
+
 ## 0.1.0
 
 - Add the initial `yume-codex` CLI.
