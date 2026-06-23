@@ -9,6 +9,9 @@ const { spawnSync } = require("node:child_process");
 const PACKAGE_ROOT = path.resolve(__dirname, "..");
 const PACKAGE_SPEC = "github:mongchongguri/yume-codex";
 const MANIFEST_PATH = ".codex/yume-codex.manifest.json";
+const PRESERVED_TEMPLATE_PATHS = new Set([
+  ".codex/context/description.md"
+]);
 const LEGACY_MANAGED_PATHS = [
   ".codex/skills/context-summary/SKILL.md",
   ".codex/skills/context-summary/agents/openai.yaml",
@@ -79,7 +82,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.3
+  yume-codex update v0.1.4
 `);
 }
 
@@ -145,11 +148,15 @@ function ensureInsideTarget(targetRoot, candidatePath) {
   throw new Error(`Refusing to write outside target directory: ${candidatePath}`);
 }
 
-function copyFile(sourceFile, destinationFile, force) {
+function copyFile(sourceFile, destinationFile, force, templatePath) {
   const targetRoot = findTargetRoot(destinationFile);
   ensureInsideTarget(targetRoot, destinationFile);
 
   const existsBeforeCopy = fs.existsSync(destinationFile);
+  if (existsBeforeCopy && isPreservedTemplatePath(templatePath)) {
+    return { status: "preserved", file: destinationFile };
+  }
+
   if (existsBeforeCopy && !force) {
     return { status: "skipped", file: destinationFile };
   }
@@ -157,6 +164,10 @@ function copyFile(sourceFile, destinationFile, force) {
   fs.mkdirSync(path.dirname(destinationFile), { recursive: true });
   fs.copyFileSync(sourceFile, destinationFile);
   return { status: existsBeforeCopy ? "written" : "created", file: destinationFile };
+}
+
+function isPreservedTemplatePath(templatePath) {
+  return PRESERVED_TEMPLATE_PATHS.has(toPosixPath(templatePath || ""));
 }
 
 function findTargetRoot(destinationFile) {
@@ -243,7 +254,7 @@ function pruneManagedFiles(targetRoot, nextFiles) {
   const failed = [];
 
   for (const relativePath of pruneCandidates) {
-    if (nextFileSet.has(relativePath) || relativePath === MANIFEST_PATH) {
+    if (nextFileSet.has(relativePath) || relativePath === MANIFEST_PATH || isPreservedTemplatePath(relativePath)) {
       continue;
     }
 
@@ -278,7 +289,7 @@ function initHarness(target, force) {
   const manifestFiles = ["AGENTS.md"];
 
   const agentsSource = path.join(PACKAGE_ROOT, "AGENTS.md");
-  copyResults.push(copyFile(agentsSource, path.join(targetRoot, "AGENTS.md"), force));
+  copyResults.push(copyFile(agentsSource, path.join(targetRoot, "AGENTS.md"), force, "AGENTS.md"));
 
   const codexSourceRoot = path.join(PACKAGE_ROOT, ".codex");
   for (const sourceFile of collectFiles(codexSourceRoot)) {
@@ -286,7 +297,7 @@ function initHarness(target, force) {
     const destinationFile = path.join(targetRoot, ".codex", relativePath);
     const manifestPath = toPosixPath(path.join(".codex", relativePath));
     ensureInsideTarget(targetRoot, destinationFile);
-    copyResults.push(copyFile(sourceFile, destinationFile, force));
+    copyResults.push(copyFile(sourceFile, destinationFile, force, manifestPath));
     manifestFiles.push(manifestPath);
   }
 
@@ -352,11 +363,13 @@ function printInitResult(results) {
   const created = results.copyResults.filter((result) => result.status === "created").length;
   const written = results.copyResults.filter((result) => result.status === "written").length;
   const skipped = results.copyResults.filter((result) => result.status === "skipped").length;
+  const preserved = results.copyResults.filter((result) => result.status === "preserved").length;
 
   console.log(`Harness files processed: ${results.copyResults.length}`);
   console.log(`Created: ${created}`);
   console.log(`Written: ${written}`);
   console.log(`Skipped: ${skipped}`);
+  console.log(`Preserved: ${preserved}`);
   console.log(`Pruned: ${results.pruned.length}`);
   console.log(`Prune failed: ${results.pruneFailed.length}`);
 

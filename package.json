@@ -1,6 +1,6 @@
 {
   "name": "yume-codex",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Codex harness engineering templates and CLI initializer.",
   "license": "MIT",
   "type": "commonjs",

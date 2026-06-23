@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- Preserve existing `.codex/context/description.md` during `init --force` and `rebase`.
+
 ## 0.1.3
 
 - Fix `yume-codex update` on Windows by running npm through the platform shell.

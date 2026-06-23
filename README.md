@@ -62,6 +62,7 @@ yume-codex init --force
 - 기존 하네스 파일은 덮어씁니다.
 - 새로 추가된 하네스 파일은 자동으로 추가합니다.
 - 이전 버전에는 있었지만 현재 템플릿에서 제거된 관리 파일은 manifest 기준으로 정리합니다.
+- `.codex/context/description.md`는 프로젝트별 설명 파일이므로 기존 파일이 있으면 덮어쓰지 않습니다.
 - 프로젝트 코드 자체는 수정하지 않고, 하네스 관리 대상 파일만 처리합니다.
 
 업데이트 후 적용 흐름:
@@ -94,7 +95,7 @@ yume-codex update
 태그, 브랜치, 커밋을 지정할 수도 있습니다.
 
 ```bash
-yume-codex update v0.1.3
+yume-codex update v0.1.4
 yume-codex update main
 ```
 
@@ -222,7 +223,7 @@ yume-codex doctor
 
 `update`는 전역 CLI를 최신 GitHub 기준으로 다시 설치합니다.
 
-`rebase`는 현재 프로젝트의 `AGENTS.md`와 `.codex/` 하네스를 설치된 CLI 버전 기준으로 다시 적용합니다.
+`rebase`는 현재 프로젝트의 `AGENTS.md`와 `.codex/` 하네스를 설치된 CLI 버전 기준으로 다시 적용합니다. 단, `.codex/context/description.md`는 프로젝트별 설명 파일이므로 기존 내용이 보존됩니다.
 
 `doctor`는 필수 파일 누락 여부를 확인합니다.
 
@@ -240,15 +241,15 @@ npm version patch --no-git-tag-version
 
 ```bash
 git add .
-git commit -m "Release v0.1.3"
-git tag v0.1.3
+git commit -m "Release v0.1.4"
+git tag v0.1.4
 git push origin main --tags
 ```
 
 특정 버전으로 고정 설치하려면 태그를 지정합니다.
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.3
+npm install -g github:mongchongguri/yume-codex#v0.1.4
 yume-codex rebase
 ```
 
