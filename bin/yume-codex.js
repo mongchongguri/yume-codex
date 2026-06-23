@@ -8,7 +8,34 @@ const { spawnSync } = require("node:child_process");
 
 const PACKAGE_ROOT = path.resolve(__dirname, "..");
 const PACKAGE_SPEC = "github:mongchongguri/yume-codex";
-const REQUIRED_PATHS = ["AGENTS.md", ".codex/common/rules/report.md", ".codex/context/description.md"];
+const REQUIRED_PATHS = [
+  "AGENTS.md",
+  ".codex/common/rules/frontend-decisions.md",
+  ".codex/common/rules/frontend/state.md",
+  ".codex/common/rules/frontend/styling-ui.md",
+  ".codex/common/rules/frontend/icons.md",
+  ".codex/common/rules/frontend/reporting.md",
+  ".codex/common/rules/report.md",
+  ".codex/common/rules/typescript.md",
+  ".codex/common/rules/versioning.md",
+  ".codex/context/description.md",
+  ".codex/common/design/principles.md",
+  ".codex/common/design/layout.md",
+  ".codex/common/design/interaction.md",
+  ".codex/skills/context-summary/SKILL.md",
+  ".codex/skills/context-summary/agents/openai.yaml",
+  ".codex/skills/context-reader/SKILL.md",
+  ".codex/skills/context-reader/agents/openai.yaml",
+  ".codex/workflow/summary/.gitkeep",
+  ".codex/workflow/worklog/.gitkeep",
+  ".codex/workflow/handoff/.gitkeep",
+  ".codex/stacks/react/decisions.md",
+  ".codex/stacks/react/design.md",
+  ".codex/stacks/expo/decisions.md",
+  ".codex/stacks/expo/design.md",
+  ".codex/stacks/react-native/decisions.md",
+  ".codex/stacks/react-native/design.md"
+];
 
 function printHelp() {
   console.log(`yume-codex

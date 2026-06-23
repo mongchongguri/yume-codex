@@ -7,3 +7,15 @@
 - Add `rebase` for overwriting existing harness files and adding new harness files.
 - Add `doctor` for checking required harness files.
 - Add `update` for reinstalling the global CLI from GitHub.
+- Add TypeScript-first coding rules.
+- Add framework version selection rules for React and Expo projects.
+- Add React Native stack rules.
+- Add frontend tool selection rules for React projects.
+- Split frontend tool defaults by React, Expo, and React Native stack.
+- Move stack-specific frontend tool defaults into per-stack `decisions.md` files.
+- Add Font Awesome icon rules for frontend stacks.
+- Add common and stack-specific design reference rules.
+- Split common frontend decision rules into smaller focused files.
+- Add bundled `context-summary` Codex skill under `.codex/skills`.
+- Store generated workflow summaries under `.codex/workflow`.
+- Add bundled `context-reader` skill for reading latest saved workflow files.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Context Summary"
+  short_description: "Summarize work, repo state, and handoff context."
+  default_prompt: "Use $context-summary to create a concise handoff summary for the current work."
+policy:
+  allow_implicit_invocation: false
