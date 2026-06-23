@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2
+
+- Split workflow skills into slash-command folders: `summary`, `worklog`, `handoff`, `read-summary`, `read-worklog`, and `read-handoff`.
+- Exclude generated `.codex/workflow/**/*.md` files from git and packaged installs.
+- Add Expo Web testing guidance to Expo stack rules.
+- Add a generated harness manifest and prune removed managed files during `rebase`.
+
 ## 0.1.1
 
 - Release expanded harness rules, stack decisions, design references, workflow folders, and bundled context workflow skills.
@@ -24,4 +31,3 @@
 - Store generated workflow summaries under `.codex/workflow`.
 - Add bundled `context-reader` skill for reading latest saved workflow files.
 - Add rules for adopting existing project design systems when the harness is introduced mid-project.
-- Split workflow skills into slash-command folders: `summary`, `worklog`, `handoff`, `read-summary`, `read-worklog`, and `read-handoff`.

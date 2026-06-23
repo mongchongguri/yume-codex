@@ -8,6 +8,13 @@ const { spawnSync } = require("node:child_process");
 
 const PACKAGE_ROOT = path.resolve(__dirname, "..");
 const PACKAGE_SPEC = "github:mongchongguri/yume-codex";
+const MANIFEST_PATH = ".codex/yume-codex.manifest.json";
+const LEGACY_MANAGED_PATHS = [
+  ".codex/skills/context-summary/SKILL.md",
+  ".codex/skills/context-summary/agents/openai.yaml",
+  ".codex/skills/context-reader/SKILL.md",
+  ".codex/skills/context-reader/agents/openai.yaml"
+];
 const REQUIRED_PATHS = [
   "AGENTS.md",
   ".codex/common/rules/frontend-decisions.md",
@@ -37,10 +44,13 @@ const REQUIRED_PATHS = [
   ".codex/workflow/summary/.gitkeep",
   ".codex/workflow/worklog/.gitkeep",
   ".codex/workflow/handoff/.gitkeep",
+  ".codex/stacks/react/react.md",
   ".codex/stacks/react/decisions.md",
   ".codex/stacks/react/design.md",
+  ".codex/stacks/expo/expo.md",
   ".codex/stacks/expo/decisions.md",
   ".codex/stacks/expo/design.md",
+  ".codex/stacks/react-native/react-native.md",
   ".codex/stacks/react-native/decisions.md",
   ".codex/stacks/react-native/design.md"
 ];
@@ -136,7 +146,8 @@ function ensureInsideTarget(targetRoot, candidatePath) {
 }
 
 function copyFile(sourceFile, destinationFile, force) {
-  ensureInsideTarget(path.dirname(destinationFile), destinationFile);
+  const targetRoot = findTargetRoot(destinationFile);
+  ensureInsideTarget(targetRoot, destinationFile);
 
   const existsBeforeCopy = fs.existsSync(destinationFile);
   if (existsBeforeCopy && !force) {
@@ -146,6 +157,18 @@ function copyFile(sourceFile, destinationFile, force) {
   fs.mkdirSync(path.dirname(destinationFile), { recursive: true });
   fs.copyFileSync(sourceFile, destinationFile);
   return { status: existsBeforeCopy ? "written" : "created", file: destinationFile };
+}
+
+function findTargetRoot(destinationFile) {
+  const normalized = path.normalize(destinationFile);
+  const codexSegment = `${path.sep}.codex${path.sep}`;
+  const codexIndex = normalized.indexOf(codexSegment);
+
+  if (codexIndex !== -1) {
+    return normalized.slice(0, codexIndex);
+  }
+
+  return path.dirname(destinationFile);
 }
 
 function collectFiles(sourceRoot) {
@@ -159,12 +182,91 @@ function collectFiles(sourceRoot) {
       continue;
     }
 
-    if (entry.isFile()) {
+    if (entry.isFile() && shouldIncludeTemplateFile(absolutePath)) {
       files.push(absolutePath);
     }
   }
 
   return files;
+}
+
+function shouldIncludeTemplateFile(sourceFile) {
+  const relativeToPackage = toPosixPath(path.relative(PACKAGE_ROOT, sourceFile));
+
+  if (relativeToPackage === MANIFEST_PATH) {
+    return false;
+  }
+
+  if (/^\.codex\/workflow\/.+\.md$/.test(relativeToPackage)) {
+    return false;
+  }
+
+  return true;
+}
+
+function toPosixPath(filePath) {
+  return filePath.split(path.sep).join("/");
+}
+
+function loadManifest(targetRoot) {
+  const manifestFile = path.join(targetRoot, MANIFEST_PATH);
+
+  if (!fs.existsSync(manifestFile)) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(manifestFile, "utf8"));
+    return Array.isArray(parsed.files) ? parsed.files : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeManifest(targetRoot, files) {
+  const manifestFile = path.join(targetRoot, MANIFEST_PATH);
+  const manifest = {
+    generatedBy: "yume-codex",
+    version: readPackageVersion(),
+    files: [...files].sort()
+  };
+
+  fs.mkdirSync(path.dirname(manifestFile), { recursive: true });
+  fs.writeFileSync(manifestFile, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+}
+
+function pruneManagedFiles(targetRoot, nextFiles) {
+  const nextFileSet = new Set(nextFiles);
+  const previousFiles = loadManifest(targetRoot);
+  const pruneCandidates = new Set([...previousFiles, ...LEGACY_MANAGED_PATHS]);
+  const pruned = [];
+  const failed = [];
+
+  for (const relativePath of pruneCandidates) {
+    if (nextFileSet.has(relativePath) || relativePath === MANIFEST_PATH) {
+      continue;
+    }
+
+    const absolutePath = path.join(targetRoot, relativePath);
+    ensureInsideTarget(targetRoot, absolutePath);
+
+    if (!fs.existsSync(absolutePath) || !fs.statSync(absolutePath).isFile()) {
+      continue;
+    }
+
+    try {
+      fs.chmodSync(absolutePath, 0o666);
+      fs.rmSync(absolutePath, { force: true });
+      pruned.push(absolutePath);
+    } catch {
+      failed.push(relativePath);
+    }
+  }
+
+  return {
+    pruned,
+    failed
+  };
 }
 
 /**
@@ -173,6 +275,7 @@ function collectFiles(sourceRoot) {
 function initHarness(target, force) {
   const targetRoot = resolveTarget(target);
   const copyResults = [];
+  const manifestFiles = ["AGENTS.md"];
 
   const agentsSource = path.join(PACKAGE_ROOT, "AGENTS.md");
   copyResults.push(copyFile(agentsSource, path.join(targetRoot, "AGENTS.md"), force));
@@ -181,11 +284,20 @@ function initHarness(target, force) {
   for (const sourceFile of collectFiles(codexSourceRoot)) {
     const relativePath = path.relative(codexSourceRoot, sourceFile);
     const destinationFile = path.join(targetRoot, ".codex", relativePath);
+    const manifestPath = toPosixPath(path.join(".codex", relativePath));
     ensureInsideTarget(targetRoot, destinationFile);
     copyResults.push(copyFile(sourceFile, destinationFile, force));
+    manifestFiles.push(manifestPath);
   }
 
-  return copyResults;
+  const pruneResult = force ? pruneManagedFiles(targetRoot, manifestFiles) : { pruned: [], failed: [] };
+  writeManifest(targetRoot, [...manifestFiles, ...pruneResult.failed]);
+
+  return {
+    copyResults,
+    pruned: pruneResult.pruned,
+    pruneFailed: pruneResult.failed
+  };
 }
 
 /**
@@ -236,17 +348,23 @@ function updateCli(ref) {
 }
 
 function printInitResult(results) {
-  const created = results.filter((result) => result.status === "created").length;
-  const written = results.filter((result) => result.status === "written").length;
-  const skipped = results.filter((result) => result.status === "skipped").length;
+  const created = results.copyResults.filter((result) => result.status === "created").length;
+  const written = results.copyResults.filter((result) => result.status === "written").length;
+  const skipped = results.copyResults.filter((result) => result.status === "skipped").length;
 
-  console.log(`Harness files processed: ${results.length}`);
+  console.log(`Harness files processed: ${results.copyResults.length}`);
   console.log(`Created: ${created}`);
   console.log(`Written: ${written}`);
   console.log(`Skipped: ${skipped}`);
+  console.log(`Pruned: ${results.pruned.length}`);
+  console.log(`Prune failed: ${results.pruneFailed.length}`);
 
   if (skipped > 0) {
     console.log("Use --force to overwrite existing files.");
+  }
+
+  if (results.pruneFailed.length > 0) {
+    console.log("Some removed managed files could not be deleted and will be retried on the next rebase.");
   }
 }
 
