@@ -79,7 +79,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.0
+  yume-codex update v0.1.3
 `);
 }
 
@@ -334,10 +334,11 @@ function normalizeUpdateRef(ref) {
  */
 function updateCli(ref) {
   const normalizedRef = normalizeUpdateRef(ref);
-  const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+  const useShell = process.platform === "win32";
   const packageSpec = `${PACKAGE_SPEC}#${normalizedRef}`;
-  const result = spawnSync(npmCommand, ["install", "-g", packageSpec], {
-    stdio: "inherit"
+  const result = spawnSync("npm", ["install", "-g", packageSpec], {
+    stdio: "inherit",
+    shell: useShell
   });
 
   if (result.error) {

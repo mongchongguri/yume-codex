@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Fix `yume-codex update` on Windows by running npm through the platform shell.
+
 ## 0.1.2
 
 - Split workflow skills into slash-command folders: `summary`, `worklog`, `handoff`, `read-summary`, `read-worklog`, and `read-handoff`.

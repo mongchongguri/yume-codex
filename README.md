@@ -94,7 +94,7 @@ yume-codex update
 태그, 브랜치, 커밋을 지정할 수도 있습니다.
 
 ```bash
-yume-codex update v0.1.2
+yume-codex update v0.1.3
 yume-codex update main
 ```
 
@@ -240,15 +240,15 @@ npm version patch --no-git-tag-version
 
 ```bash
 git add .
-git commit -m "Release v0.1.2"
-git tag v0.1.2
+git commit -m "Release v0.1.3"
+git tag v0.1.3
 git push origin main --tags
 ```
 
 특정 버전으로 고정 설치하려면 태그를 지정합니다.
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.2
+npm install -g github:mongchongguri/yume-codex#v0.1.3
 yume-codex rebase
 ```
 
