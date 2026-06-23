@@ -23,3 +23,5 @@
 - Add bundled `context-summary` Codex skill under `.codex/skills`.
 - Store generated workflow summaries under `.codex/workflow`.
 - Add bundled `context-reader` skill for reading latest saved workflow files.
+- Add rules for adopting existing project design systems when the harness is introduced mid-project.
+- Split workflow skills into slash-command folders: `summary`, `worklog`, `handoff`, `read-summary`, `read-worklog`, and `read-handoff`.

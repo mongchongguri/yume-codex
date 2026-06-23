@@ -12,6 +12,25 @@ Korean note: ? ???? ?? UI ??? ???? ?? ?? ???, ???? ??, ???? ??? ????.
 
 Follow the existing styling system unless the user explicitly asks to change it.
 
+When the harness is introduced after project code already exists, match the existing design elements instead of applying the default stack choices blindly.
+
+Korean note: 프로젝트 코드가 이미 있는 상태에서 하네스를 도입한 경우 기본 스택 선택을 그대로 강요하지 말고 기존 디자인 요소를 따른다.
+
+Inspect and reuse:
+
+- Existing design tokens
+- Existing shared components
+- Existing layout primitives
+- Existing form, table, modal, and navigation patterns
+- Existing icon style and icon library
+- Existing responsive behavior
+
+Korean note: 기존 디자인 토큰, 공통 컴포넌트, 레이아웃, 폼, 테이블, 모달, 내비게이션, 아이콘, 반응형 방식을 확인하고 재사용한다.
+
+If the existing project conflicts with the harness default, preserve the existing project choice and mention the conflict in the work report.
+
+Korean note: 기존 프로젝트 선택과 하네스 기본값이 충돌하면 기존 선택을 유지하고 작업 보고에 충돌 내용을 남긴다.
+
 Korean note: ???? ??? ???? ?? ? ?? ???? ???? ????.
 
 ## Stack Rules

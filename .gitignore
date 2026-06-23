@@ -3,5 +3,7 @@ npm-debug.log*
 *.tgz
 .npm-cache*/
 .tmp*/
+.codex/workflow/**/*.md
+!.codex/workflow/**/.gitkeep
 .DS_Store
 .idea/
