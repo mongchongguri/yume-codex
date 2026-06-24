@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5
+
+- Add package compatibility version check rules before installation.
+
 ## 0.1.4
 
 - Preserve existing `.codex/context/description.md` during `init --force` and `rebase`.
