@@ -95,7 +95,7 @@ yume-codex update
 태그, 브랜치, 커밋을 지정할 수도 있습니다.
 
 ```bash
-yume-codex update v0.1.5
+yume-codex update v0.1.6
 yume-codex update main
 ```
 
@@ -241,15 +241,15 @@ npm version patch --no-git-tag-version
 
 ```bash
 git add .
-git commit -m "Release v0.1.5"
-git tag v0.1.5
+git commit -m "Release v0.1.6"
+git tag v0.1.6
 git push origin main --tags
 ```
 
 특정 버전으로 고정 설치하려면 태그를 지정합니다.
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.5
+npm install -g github:mongchongguri/yume-codex#v0.1.6
 yume-codex rebase
 ```
 
@@ -272,3 +272,41 @@ git remote add origin https://github.com/mongchongguri/yume-codex.git
 ```bash
 git push -u origin main
 ```
+
+## `/git` 스킬
+
+현재 연결된 git 원격 저장소를 기준으로 pull, commit, push를 순서대로 진행합니다.
+
+주요 동작:
+
+- 현재 브랜치, upstream, remote, 변경 파일 확인
+- 로컬 변경이 있으면 `git pull --rebase --autostash`로 pull
+- 변경사항이 있으면 커밋 메시지를 생성하거나 사용자가 제공한 메시지로 commit
+- upstream이 있으면 `git push`, 없고 `origin`이 있으면 `git push -u origin <branch>` 실행
+- 충돌, remote 없음, 위험한 변경, force push가 필요한 상황에서는 중단하고 보고
+
+주의 사항:
+
+- `/git` 또는 `$git`으로 명시 호출할 때만 사용합니다.
+- `git reset --hard`, `git clean`, force push는 실행하지 않습니다.
+- `.codex/workflow/**/*.md` 같은 생성 기록 파일은 커밋하지 않습니다.
+
+## `/icon-image` 스킬
+
+Font Awesome, Lucide, Material Icons 같은 아이콘 라이브러리 대신 PNG 아이콘 이미지를 생성해서 프로젝트에 적용합니다.
+
+주요 동작:
+
+- 요청한 아이콘 의미, 적용 화면, 디자인 톤 확인
+- 프로젝트의 기존 이미지 asset 폴더와 import 패턴 확인
+- PNG 아이콘을 생성하고 `assets/icons/`, `src/assets/icons/`, `public/icons/` 등 프로젝트 규칙에 맞는 위치에 저장
+- Expo/React Native는 기존 이미지 패턴 또는 `Image` 컴포넌트로 적용
+- React Web은 기존 asset import 또는 public 경로 규칙으로 적용
+- 렌더링 크기, 흐림, 잘림, 레이아웃 깨짐 여부 확인
+
+주의 사항:
+
+- `/icon-image` 또는 `$icon-image`로 명시 호출할 때만 사용합니다.
+- 요청된 아이콘은 아이콘 폰트나 SVG 아이콘 라이브러리로 대체하지 않습니다.
+- 일반 UI 아이콘은 투명 배경 PNG를 기본으로 합니다.
+- 작은 크기에서도 의미가 읽히도록 단순하고 명확한 실루엣을 우선합니다.

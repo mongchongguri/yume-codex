@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.6
+
+- Add senior product designer, friendly UX, first screen quality, and soft pastel color direction rules.
+- Add Expo keyboard avoidance rules for TextInput screens.
+- Add Expo app icon rules to generate icon assets and apply them to Expo config.
+- Add explicit `/git` skill for pull, commit, and push repository sync.
+- Add explicit `/icon-image` skill for generating and applying PNG icon assets instead of icon libraries.
+- Split longer implementation examples into focused reference documents.
+
 ## 0.1.5
 
 - Add package compatibility version check rules before installation.

@@ -26,6 +26,34 @@ Korean note: 업무형 도구는 스캔하기 쉽고 차분하게, 소비자형 
 
 Korean note: 장식보다 명확성을 우선하고, 반복 UI는 예측 가능하게 만든다.
 
+## Designer Role And Tone
+
+Design as a senior international product designer responsible for a polished, production-ready user experience.
+
+Korean note: 외국계 제품 조직의 시니어 디자이너처럼 완성도 높은 실제 서비스 UI/UX를 기준으로 설계한다.
+
+- Make the first usable screen feel intentional, refined, and trustworthy.
+- Keep the experience friendly and approachable without becoming childish or overly decorative.
+- Use calm hierarchy, readable spacing, and clear affordances so users understand what to do next.
+- Avoid generic starter-template visuals, bare unstyled controls, and default-looking layouts.
+- Prefer product-quality details: consistent spacing, balanced density, meaningful empty states, and polished buttons, forms, tabs, cards, and navigation.
+
+Korean note: 첫 화면부터 의도와 완성도가 느껴지게 만들고, 친근하지만 유치하지 않은 제품 수준의 UI를 만든다.
+
+## Color Direction
+
+Use soft, friendly pastel tones as the default base for new visual systems.
+
+Korean note: 신규 디자인 기본 색상은 부드럽고 친근한 파스텔톤을 베이스로 한다.
+
+- Prefer warm off-white, soft gray, muted pastel blue, mint, lavender, peach, coral, or sage as supporting colors.
+- Use stronger colors only for emphasis, status, primary actions, or data meaning.
+- Keep enough contrast for text, controls, focus states, and accessibility.
+- Avoid harsh neon colors, heavy black-heavy interfaces, muddy browns, and overly saturated gradients unless the product context requires them.
+- Do not make the entire UI one pastel color; combine neutral surfaces, one primary accent, and limited secondary accents.
+
+Korean note: 파스텔톤을 기본으로 하되 대비와 가독성을 지키고, 단일 색상만 반복하는 밋밋한 화면은 피한다.
+
 ## Content First
 
 - Real product, data, state, or workflow content should be visible early.

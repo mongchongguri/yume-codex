@@ -14,6 +14,20 @@ Korean note: 화면, 패널, 목록, 폼, 대시보드 배치 시 이 규칙을 
 
 Korean note: 실제 사용 화면을 먼저 만들고, 카드 중첩과 과한 프레임을 피한다.
 
+## First Screen Quality
+
+The initial screen must look like a designed product, not a raw scaffold.
+
+Korean note: 초기 화면은 단순 스캐폴드가 아니라 디자인된 제품처럼 보여야 한다.
+
+- Give the first viewport a clear focal area, primary action, and readable information structure.
+- Use soft pastel surfaces or accents with neutral backgrounds for a calm first impression.
+- Balance whitespace and density so the screen feels friendly but still useful.
+- Add realistic empty, loading, or sample states when data is not available yet.
+- Align headers, forms, lists, and action bars to a consistent spacing grid.
+
+Korean note: 첫 화면에는 명확한 초점, 주요 액션, 부드러운 색감, 정돈된 간격, 실제 사용 상태가 보여야 한다.
+
 ## Operational Tools
 
 For admin, CRM, SaaS, dashboard, and CRUD tools:
