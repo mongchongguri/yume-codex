@@ -7,7 +7,6 @@ description: Use only when the user explicitly invokes "/read-handoff" or "$read
 
 Read the latest saved handoff and continue work from that context.
 
-Korean note: 최신 handoff 파일을 읽고 인수인계 맥락에서 이어서 작업한다.
 
 ## Source Folder
 

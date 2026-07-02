@@ -7,7 +7,6 @@ description: Use only when the user explicitly invokes "/read-summary" or "$read
 
 Read the latest saved summary and continue from that context.
 
-Korean note: 최신 summary 파일을 읽고 그 맥락에서 이어서 작업한다.
 
 ## Source Folder
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.7
+
+- Add Expo SDK 56 mobile test compatibility rules for new Expo projects.
+- Convert harness Markdown documents to English-only and keep Korean for user-facing reports and options.
+- Add Expo app icon safe-area rules to prevent APK launcher icons from looking zoomed or cropped.
+- Add build progress reporting rules and `/build-progress` skill for long-running app builds.
+
 ## 0.1.6
 
 - Add senior product designer, friendly UX, first screen quality, and soft pastel color direction rules.

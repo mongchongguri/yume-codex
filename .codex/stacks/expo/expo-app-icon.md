@@ -2,13 +2,11 @@
 
 Use these rules when creating, replacing, or updating an Expo app icon.
 
-Korean note: Expo 앱 아이콘을 생성하거나 변경할 때 아이콘 파일 생성부터 설정 반영까지 자동으로 처리한다.
 
 ## Core Rule
 
 When the task is to create or replace an Expo app icon, do not stop after generating the image file. Apply it to the Expo project configuration as part of the same task.
 
-Korean note: Expo 앱 아이콘을 만들거나 바꾸는 작업은 이미지 생성에서 끝내지 말고 Expo 설정 적용까지 완료한다.
 
 ## What To Inspect
 
@@ -19,13 +17,11 @@ Before editing:
 - Check existing asset folders such as `assets/`, `assets/images/`, or `assets/icons/`.
 - Check whether the project already has icon naming conventions.
 
-Korean note: app 설정 파일, 기존 아이콘 설정, adaptive icon, asset 폴더, 파일명 규칙을 먼저 확인한다.
 
 ## Asset Generation
 
 Create or place the app icon asset in the project asset folder.
 
-Korean note: 앱 아이콘 파일은 프로젝트 asset 폴더에 생성하거나 배치한다.
 
 Default recommendations:
 
@@ -36,7 +32,6 @@ Default recommendations:
 
 Use project conventions if they already differ from these defaults.
 
-Korean note: 기존 프로젝트 규칙이 있으면 기본 경로보다 기존 규칙을 우선한다.
 
 ## Image Requirements
 
@@ -45,20 +40,21 @@ Korean note: 기존 프로젝트 규칙이 있으면 기본 경로보다 기존 
 - For the main app icon, use `1024x1024` when generating a new asset.
 - Keep the design readable at small launcher sizes.
 - Avoid important details near the outer edge.
+- Do not fill the entire canvas with the logo or main symbol.
+- Keep generous safe padding so the installed APK launcher icon does not look zoomed, cropped, or oversized.
+- For Android adaptive foreground images, keep the main symbol inside the central safe area and leave transparent padding around it.
+- Prefer a smaller centered foreground symbol over an edge-to-edge symbol.
 - Use enough contrast against the intended background.
 - If adaptive icon is needed, keep the foreground centered with safe padding.
 
-Korean note: PNG, 정사각형, 1024x1024 원본, 작은 크기 가독성, 가장자리 여백, adaptive icon 안전 영역을 지킨다.
 
 ## Expo Config Application
 
 After creating or replacing the icon file, update Expo configuration.
 
-Korean note: 아이콘 파일 생성 후 Expo 설정 파일까지 수정한다.
 
 Read `.codex/stacks/expo/expo-app-icon-implementation.md` for config examples and verification details.
 
-Korean note: 설정 예시와 검증 기준은 별도 구현 문서를 확인한다.
 
 ## Automatic Application Rule
 
@@ -71,7 +67,6 @@ When the user asks to make or change an Expo app icon:
 5. Preserve unrelated app config fields.
 6. Report changed files and paths.
 
-Korean note: 아이콘 asset 생성, Expo 설정 연결, adaptive icon, favicon 반영, 변경 파일 보고까지 한 번에 처리한다.
 
 ## Exceptions
 
@@ -82,4 +77,3 @@ Do not modify app icon config when:
 - The config is generated externally and must not be edited directly.
 - The icon asset requires manual designer approval before application.
 
-Korean note: 컨셉만 요청했거나, Expo가 아니거나, 외부 생성 config거나, 수동 승인이 필요한 경우에는 적용하지 않는다.

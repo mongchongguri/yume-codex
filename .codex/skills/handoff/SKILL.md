@@ -7,7 +7,6 @@ description: Use only when the user explicitly invokes "/handoff" or "$handoff" 
 
 Create a continuation-focused handoff summary and save it as a new workflow file.
 
-Korean note: 다음 Codex 세션이 이어서 작업할 수 있는 인수인계 요약을 저장한다.
 
 ## Output Location
 
@@ -19,7 +18,6 @@ Always create a new Markdown file:
 
 Do not overwrite existing files.
 
-Korean note: 기존 파일을 덮어쓰지 않고 timestamp 파일로 계속 쌓는다.
 
 ## Content
 

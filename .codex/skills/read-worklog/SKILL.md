@@ -7,7 +7,6 @@ description: Use only when the user explicitly invokes "/read-worklog" or "$read
 
 Read the latest saved worklog and continue from that repository state.
 
-Korean note: 최신 worklog 파일을 읽고 저장소 작업 상태를 이어간다.
 
 ## Source Folder
 

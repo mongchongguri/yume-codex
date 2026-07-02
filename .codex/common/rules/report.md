@@ -2,7 +2,13 @@
 
 Use these rules when reporting work to the user.
 
-Korean note: 사용자에게 작업 상황을 보고할 때 이 규칙을 따른다.
+## Language
+
+Write harness documents and repository Markdown instructions in English.
+
+When reporting progress, completion results, blockers, or options to a Korean-speaking user, respond in Korean.
+
+Use Korean for user-facing choices, approval questions, summaries, and final reports when the conversation is in Korean.
 
 ## Start Of Work
 
@@ -12,7 +18,6 @@ Before making changes, report:
 - Referenced rules or documents
 - Files expected to change
 
-Korean note: 수정 전에 작업 내용, 참고 규칙, 수정 예정 파일을 먼저 알린다.
 
 Example:
 
@@ -31,7 +36,8 @@ Planned changes:
 
 When a decision is based on a rule, mention the rule or file that supports it.
 
-Korean note: 규칙을 근거로 판단할 때는 어떤 문서를 참고했는지 함께 말한다.
+For long-running builds and release commands, follow `.codex/common/rules/build-progress.md` and report progress periodically instead of only saying the command is running.
+
 
 Example:
 
@@ -52,7 +58,6 @@ At the end of work, report:
 - Commands run
 - Result
 
-Korean note: 완료 보고에는 참고 규칙, 수정 파일, 주요 변경사항, 실행 명령, 결과를 포함한다.
 
 Example:
 

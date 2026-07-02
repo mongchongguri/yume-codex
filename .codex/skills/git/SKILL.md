@@ -7,7 +7,6 @@ description: Use only when the user explicitly invokes "/git" or "$git" to synch
 
 Synchronize the current repository with its connected remote.
 
-Korean note: 현재 연결된 git 원격 저장소를 기준으로 pull, commit, push를 진행한다.
 
 ## Scope
 
@@ -18,7 +17,6 @@ This skill is for an explicit repository sync workflow:
 3. Stage and commit current work when changes exist.
 4. Push the current branch to the connected remote.
 
-Korean note: 저장소 상태 확인, pull, commit, push를 한 번에 처리하는 명시 호출용 스킬이다.
 
 ## Safety Rules
 
@@ -30,7 +28,6 @@ Korean note: 저장소 상태 확인, pull, commit, push를 한 번에 처리하
 - Do not commit generated `.codex/workflow/**/*.md` files.
 - If changes look unrelated, sensitive, or risky, report the files and ask before committing.
 
-Korean note: 강제 초기화, 강제 push, 충돌 자동 덮어쓰기, 위험한 변경 자동 커밋은 금지한다.
 
 ## Workflow
 
@@ -43,7 +40,6 @@ git branch -vv
 git remote -v
 ```
 
-Korean note: 먼저 현재 브랜치, upstream, remote, 변경 파일을 확인한다.
 
 Pull before committing:
 
@@ -51,7 +47,6 @@ Pull before committing:
 - If local changes exist, run `git pull --rebase --autostash`.
 - If pull fails or reports conflicts, stop and summarize the conflict state.
 
-Korean note: 로컬 변경이 있으면 autostash rebase로 pull하고, 충돌이 나면 중단한다.
 
 Stage and commit:
 
@@ -62,7 +57,6 @@ Stage and commit:
 - If there are staged changes, commit them.
 - If there are no changes after pull, skip the commit.
 
-Korean note: 사용자가 메시지를 주면 그대로 사용하고, 없으면 변경 요약 기준으로 짧은 커밋 메시지를 만든다.
 
 Push:
 
@@ -70,7 +64,6 @@ Push:
 - If there is no upstream but `origin` exists, use `git push -u origin <current-branch>`.
 - Do not use `--force` or `--force-with-lease`.
 
-Korean note: upstream이 있으면 일반 push를 사용하고, 없으면 origin에 현재 브랜치를 upstream으로 연결한다.
 
 ## Verification
 
@@ -82,7 +75,6 @@ After push, report:
 - Push result
 - Remaining `git status --short`
 
-Korean note: 완료 후 브랜치, 커밋 해시, pull/push 결과, 남은 상태를 보고한다.
 
 ## Failure Handling
 
@@ -93,4 +85,3 @@ If any step fails:
 - Show the current `git status --short`.
 - Do not attempt unrelated recovery commands.
 
-Korean note: 실패하면 중단하고 상태를 보고하며, 임의 복구 명령은 실행하지 않는다.

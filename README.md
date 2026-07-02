@@ -1,71 +1,71 @@
 # yume-codex
 
-`yume-codex`는 Codex 프로젝트에 공통 하네스 구조를 설치하는 CLI입니다.
+`yume-codex` is a CLI for installing a reusable Codex harness into projects.
 
-프로젝트 폴더에서 명령어를 실행하면 `AGENTS.md`와 `.codex/` 하네스 문서, 스택별 규칙, Codex 스킬을 추가합니다.
+Running the CLI in a project adds `AGENTS.md`, `.codex/` harness documents, stack rules, and project skills.
 
-## 설치
+## Installation
 
-GitHub 저장소에서 전역 설치합니다.
+Install globally from GitHub:
 
 ```bash
 npm install -g github:mongchongguri/yume-codex
 ```
 
-또는 Git URL로 설치할 수 있습니다.
+Or install from the Git URL:
 
 ```bash
 npm install -g https://github.com/mongchongguri/yume-codex.git
 ```
 
-설치 확인:
+Check the installed CLI:
 
 ```bash
 yume-codex --version
 yume-codex --help
 ```
 
-## 기본 사용
+## Basic Usage
 
-프로젝트 폴더로 이동한 뒤 하네스를 설치합니다.
+Install the harness in the current project:
 
 ```bash
 yume-codex init
 ```
 
-특정 폴더에 설치하려면 대상 경로를 지정합니다.
+Install the harness in another directory:
 
 ```bash
 yume-codex init ./my-project
 ```
 
-기존 하네스 파일을 덮어쓰면서 설치하려면 `--force`를 사용합니다.
+Overwrite existing harness files during init:
 
 ```bash
 yume-codex init --force
 ```
 
-## 명령어
+## Commands
 
 ### `yume-codex init [target] [--force]`
 
-대상 프로젝트에 `AGENTS.md`와 `.codex/` 하네스 파일을 복사합니다.
+Copies `AGENTS.md` and `.codex/` harness files into the target project.
 
-- 기본 대상은 현재 폴더입니다.
-- 기존 파일이 있으면 기본적으로 건너뜁니다.
-- `--force`를 붙이면 기존 하네스 파일을 덮어씁니다.
+- The default target is the current directory.
+- Existing files are skipped by default.
+- `--force` overwrites existing harness files, except preserved project-specific files.
 
 ### `yume-codex rebase [target]`
 
-설치된 `yume-codex` 버전의 하네스 기준으로 대상 프로젝트를 다시 맞춥니다.
+Reapplies the harness from the installed `yume-codex` version.
 
-- 기존 하네스 파일은 덮어씁니다.
-- 새로 추가된 하네스 파일은 자동으로 추가합니다.
-- 이전 버전에는 있었지만 현재 템플릿에서 제거된 관리 파일은 manifest 기준으로 정리합니다.
-- `.codex/context/description.md`는 프로젝트별 설명 파일이므로 기존 파일이 있으면 덮어쓰지 않습니다.
-- 프로젝트 코드 자체는 수정하지 않고, 하네스 관리 대상 파일만 처리합니다.
+- Existing managed harness files are overwritten.
+- New managed harness files are added.
+- Removed managed files are pruned from the generated manifest.
+- `.codex/context/description.md` is preserved when it already exists because it is project-specific.
+- Project source code outside the harness is not modified.
 
-업데이트 후 적용 흐름:
+Recommended update flow:
 
 ```bash
 yume-codex update
@@ -74,34 +74,34 @@ yume-codex rebase
 
 ### `yume-codex doctor [target]`
 
-대상 프로젝트에 필수 하네스 파일이 있는지 확인합니다.
+Checks whether the required harness files exist.
 
 ```bash
 yume-codex doctor
 ```
 
-정상일 때는 `OK`를 출력하고, 누락된 파일이 있으면 목록을 출력합니다.
+It prints `OK` when the target is valid and lists missing files otherwise.
 
 ### `yume-codex update [ref]`
 
-전역 설치된 `yume-codex` CLI를 GitHub에서 다시 설치합니다.
+Reinstalls the global `yume-codex` CLI from GitHub.
 
-기본값은 `main` 브랜치입니다.
+The default ref is `main`.
 
 ```bash
 yume-codex update
 ```
 
-태그, 브랜치, 커밋을 지정할 수도 있습니다.
+A tag, branch, or commit can also be used:
 
 ```bash
-yume-codex update v0.1.6
+yume-codex update v0.1.7
 yume-codex update main
 ```
 
 ### `yume-codex --version`
 
-현재 설치된 CLI 버전을 출력합니다.
+Prints the installed CLI version.
 
 ```bash
 yume-codex --version
@@ -109,111 +109,166 @@ yume-codex --version
 
 ### `yume-codex --help`
 
-사용 가능한 명령어와 예시를 출력합니다.
+Prints command help and examples.
 
 ```bash
 yume-codex --help
 ```
 
-## 포함되는 하네스 구조
+## Included Harness Structure
 
-주요 파일과 폴더는 다음과 같습니다.
+- `AGENTS.md`: top-level Codex project instructions.
+- `.codex/context/`: project description and decision context.
+- `.codex/common/rules/`: shared coding, reporting, TypeScript, and versioning rules.
+- `.codex/common/rules/frontend/`: frontend state, styling, icon, and reporting rules.
+- `.codex/common/patterns/`: shared code organization patterns.
+- `.codex/common/design/`: shared UI design guidance.
+- `.codex/stacks/react/`: React stack rules and decisions.
+- `.codex/stacks/expo/`: Expo stack rules, SDK compatibility, web testing, app icon, keyboard avoidance, and decisions.
+- `.codex/stacks/react-native/`: React Native stack rules and decisions.
+- `.codex/skills/`: project skills callable from Codex.
+- `.codex/workflow/`: generated summary, worklog, and handoff files.
 
-- `AGENTS.md`: Codex가 프로젝트에서 먼저 읽는 최상위 작업 지침입니다.
-- `.codex/context/`: 프로젝트 설명과 작업 판단 기준을 둡니다.
-- `.codex/common/rules/`: 공통 코딩 규칙, 보고 규칙, TypeScript 규칙, 버전 관리 규칙을 둡니다.
-- `.codex/common/rules/frontend/`: 프론트엔드 상태 관리, 스타일링, 아이콘, 보고 기준을 둡니다.
-- `.codex/common/patterns/`: 코드 구조화 패턴을 둡니다.
-- `.codex/common/design/`: 공통 UI 디자인 참고 기준을 둡니다.
-- `.codex/stacks/react/`: React 프로젝트 규칙과 의사결정 기준을 둡니다.
-- `.codex/stacks/expo/`: Expo 프로젝트 규칙, Expo Web 테스트 기준, 의사결정 기준을 둡니다.
-- `.codex/stacks/react-native/`: React Native 프로젝트 규칙과 의사결정 기준을 둡니다.
-- `.codex/skills/`: Codex에서 호출할 수 있는 프로젝트 스킬을 둡니다.
-- `.codex/workflow/`: 스킬이 생성하는 요약, 작업 로그, 인수인계 파일을 둡니다.
+Generated `.codex/workflow/**/*.md` files are excluded from git and package distribution. Only `.gitkeep` files are included to preserve folders.
 
-`.codex/workflow/**/*.md` 파일은 작업 중 생성되는 기록물이므로 git과 패키지 배포 대상에서 제외됩니다. 폴더 유지를 위한 `.gitkeep`만 포함됩니다.
+## Documentation Language
 
-## 포함된 스킬
+Harness Markdown files are written in English.
 
-스킬은 Codex에서 `/스킬명` 또는 `$스킬명` 형태로 호출하는 것을 기준으로 합니다.
+User-facing progress reports, completion reports, and option prompts should be written in Korean when the user is working in Korean.
+
+## Included Skills
+
+Skills are intended to be invoked explicitly with `/skill-name` or `$skill-name`.
 
 ### `/summary`
 
-현재 대화 맥락을 요약해서 새 파일로 저장합니다.
+Saves a concise summary of the current conversation context.
 
-저장 위치:
+Output:
 
 ```text
 .codex/workflow/summary/YYYYMMDD-HHMMSS-summary.md
 ```
 
-포함 내용:
+Includes:
 
-- 사용자 목표와 선호사항
-- 대화 중 결정된 내용
-- 완료된 작업
-- 열린 질문
-- 다음 작업
+- User goals and preferences
+- Decisions made in the conversation
+- Completed work
+- Open questions
+- Next steps
 
 ### `/worklog`
 
-현재 저장소 작업 상태를 점검해서 작업 로그 파일로 저장합니다.
+Saves a repository worklog based on git status, diffs, recent commits, and validation commands.
 
-저장 위치:
+Output:
 
 ```text
 .codex/workflow/worklog/YYYYMMDD-HHMMSS-worklog.md
 ```
 
-주로 확인하는 내용:
+Includes:
 
-- 현재 브랜치와 upstream
-- staged 변경사항
-- unstaged 변경사항
-- 최근 커밋
-- 실행한 검증 명령과 결과
-- 아직 커밋, 검토, 후속 작업이 필요한 파일
+- Current branch and upstream
+- Staged changes
+- Unstaged changes
+- Recent commits
+- Commands run and results
+- Files that still need commit, review, or follow-up
 
 ### `/handoff`
 
-다른 Codex 세션이 이어서 작업할 수 있도록 인수인계 문서를 저장합니다.
+Saves a handoff document so another Codex session can continue the work.
 
-저장 위치:
+Output:
 
 ```text
 .codex/workflow/handoff/YYYYMMDD-HHMMSS-handoff.md
 ```
 
-포함 내용:
+Includes:
 
-- 현재 목표와 진행 상태
-- 이미 결정된 중요한 사항
-- 변경했거나 관련 있는 파일
-- 실행한 명령과 결과
-- 알려진 위험 또는 미해결 질문
-- 다음 권장 작업
+- Current goal and status
+- Important decisions already made
+- Changed or relevant files
+- Commands already run and results
+- Known risks or unresolved questions
+- Next recommended action
 
 ### `/read-summary`
 
-`.codex/workflow/summary/` 폴더에서 최신 summary 파일을 읽고 그 맥락에서 작업을 이어갑니다.
-
-summary 파일이 없으면 먼저 `/summary`를 사용해 저장하라고 안내합니다.
+Reads the latest file from `.codex/workflow/summary/` and continues from that context.
 
 ### `/read-worklog`
 
-`.codex/workflow/worklog/` 폴더에서 최신 worklog 파일을 읽고 저장소 작업 상태를 이어갑니다.
-
-worklog 파일이 없으면 먼저 `/worklog`를 사용해 저장하라고 안내합니다.
+Reads the latest file from `.codex/workflow/worklog/` and continues from that repository state.
 
 ### `/read-handoff`
 
-`.codex/workflow/handoff/` 폴더에서 최신 handoff 파일을 읽고 인수인계 내용 기준으로 작업을 이어갑니다.
+Reads the latest file from `.codex/workflow/handoff/` and continues from that handoff context.
 
-handoff 파일이 없으면 먼저 `/handoff`를 사용해 저장하라고 안내합니다.
+### `/build-progress`
 
-## 업데이트 흐름
+Runs long build commands with active progress reports instead of only showing that a command is running.
 
-하네스 저장소에 새 규칙이나 스킬이 추가되면 다음 순서로 적용합니다.
+Use for:
+
+- Release APK builds
+- AAB builds
+- Expo or React Native builds
+- Gradle builds
+- Long production builds or deployment commands
+
+Main behavior:
+
+- Report the command before it starts.
+- Inspect the latest terminal output while the command runs.
+- Report progress about every 30 seconds.
+- Infer build phases such as dependency resolution, Expo config, Gradle configuration, JavaScript bundling, resource processing, compilation, signing, and artifact generation.
+- Report the artifact path, warnings, and result when complete.
+
+### `/git`
+
+Synchronizes the current repository with the connected git remote.
+
+Main behavior:
+
+- Inspect current branch, upstream, remote, and changed files.
+- Pull with `git pull --rebase --autostash` when local changes exist.
+- Commit changes with a user-provided or generated commit message.
+- Push with `git push` when upstream exists, or `git push -u origin <branch>` when needed.
+- Stop and report when conflicts, missing remotes, risky changes, or force-push situations occur.
+
+Safety:
+
+- Use only when explicitly invoked with `/git` or `$git`.
+- Do not run `git reset --hard`, `git clean`, or force push.
+- Do not commit generated `.codex/workflow/**/*.md` files.
+
+### `/icon-image`
+
+Creates PNG icon image assets and applies them to the current project instead of using Font Awesome, Lucide, Material Icons, or other icon libraries.
+
+Main behavior:
+
+- Understand the requested icon meaning, target screen, and visual tone.
+- Inspect existing asset folders and image import patterns.
+- Save PNG assets to a project-appropriate path such as `assets/icons/`, `src/assets/icons/`, or `public/icons/`.
+- Apply the PNG using the project's existing image pattern.
+- Verify rendered size, blur, cropping, and layout stability.
+
+Safety:
+
+- Use only when explicitly invoked with `/icon-image` or `$icon-image`.
+- Do not replace the requested PNG asset with an icon font or SVG icon library.
+- Use transparent-background PNG for normal UI icons by default.
+- Keep the silhouette readable at small sizes.
+
+## Update Flow
+
+When the harness repository adds new rules or skills, apply them with:
 
 ```bash
 yume-codex update
@@ -221,92 +276,54 @@ yume-codex rebase
 yume-codex doctor
 ```
 
-`update`는 전역 CLI를 최신 GitHub 기준으로 다시 설치합니다.
+`update` reinstalls the global CLI from GitHub.
 
-`rebase`는 현재 프로젝트의 `AGENTS.md`와 `.codex/` 하네스를 설치된 CLI 버전 기준으로 다시 적용합니다. 단, `.codex/context/description.md`는 프로젝트별 설명 파일이므로 기존 내용이 보존됩니다.
+`rebase` reapplies `AGENTS.md` and `.codex/` from the installed CLI version while preserving `.codex/context/description.md` when it already exists.
 
-`doctor`는 필수 파일 누락 여부를 확인합니다.
+`doctor` verifies required files.
 
-## 버전 관리
+## Version Management
 
-버전은 `package.json`의 `version`으로 관리합니다.
+The package version is managed in `package.json`.
 
-릴리스 작업 예시:
+Release example:
 
 ```bash
 npm version patch --no-git-tag-version
 ```
 
-그 다음 `CHANGELOG.md`를 갱신하고 커밋, 태그, 푸시합니다.
+Then update `CHANGELOG.md`, commit, tag, and push:
 
 ```bash
 git add .
-git commit -m "Release v0.1.6"
-git tag v0.1.6
+git commit -m "Release v0.1.7"
+git tag v0.1.7
 git push origin main --tags
 ```
 
-특정 버전으로 고정 설치하려면 태그를 지정합니다.
+Install a specific version by tag:
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.6
+npm install -g github:mongchongguri/yume-codex#v0.1.7
 yume-codex rebase
 ```
 
-## GitHub 저장소 설정
+## GitHub Repository Setup
 
-이 패키지는 다음 기준으로 설정되어 있습니다.
+This package is configured as:
 
-- 패키지 이름: `yume-codex`
-- CLI 명령어: `yume-codex`
-- 저장소: `https://github.com/mongchongguri/yume-codex.git`
+- Package name: `yume-codex`
+- CLI command: `yume-codex`
+- Repository: `https://github.com/mongchongguri/yume-codex.git`
 
-원격 저장소가 아직 연결되지 않았다면 먼저 등록합니다.
+Add the remote if it is not registered yet:
 
 ```bash
 git remote add origin https://github.com/mongchongguri/yume-codex.git
 ```
 
-푸시:
+Push:
 
 ```bash
 git push -u origin main
 ```
-
-## `/git` 스킬
-
-현재 연결된 git 원격 저장소를 기준으로 pull, commit, push를 순서대로 진행합니다.
-
-주요 동작:
-
-- 현재 브랜치, upstream, remote, 변경 파일 확인
-- 로컬 변경이 있으면 `git pull --rebase --autostash`로 pull
-- 변경사항이 있으면 커밋 메시지를 생성하거나 사용자가 제공한 메시지로 commit
-- upstream이 있으면 `git push`, 없고 `origin`이 있으면 `git push -u origin <branch>` 실행
-- 충돌, remote 없음, 위험한 변경, force push가 필요한 상황에서는 중단하고 보고
-
-주의 사항:
-
-- `/git` 또는 `$git`으로 명시 호출할 때만 사용합니다.
-- `git reset --hard`, `git clean`, force push는 실행하지 않습니다.
-- `.codex/workflow/**/*.md` 같은 생성 기록 파일은 커밋하지 않습니다.
-
-## `/icon-image` 스킬
-
-Font Awesome, Lucide, Material Icons 같은 아이콘 라이브러리 대신 PNG 아이콘 이미지를 생성해서 프로젝트에 적용합니다.
-
-주요 동작:
-
-- 요청한 아이콘 의미, 적용 화면, 디자인 톤 확인
-- 프로젝트의 기존 이미지 asset 폴더와 import 패턴 확인
-- PNG 아이콘을 생성하고 `assets/icons/`, `src/assets/icons/`, `public/icons/` 등 프로젝트 규칙에 맞는 위치에 저장
-- Expo/React Native는 기존 이미지 패턴 또는 `Image` 컴포넌트로 적용
-- React Web은 기존 asset import 또는 public 경로 규칙으로 적용
-- 렌더링 크기, 흐림, 잘림, 레이아웃 깨짐 여부 확인
-
-주의 사항:
-
-- `/icon-image` 또는 `$icon-image`로 명시 호출할 때만 사용합니다.
-- 요청된 아이콘은 아이콘 폰트나 SVG 아이콘 라이브러리로 대체하지 않습니다.
-- 일반 UI 아이콘은 투명 배경 PNG를 기본으로 합니다.
-- 작은 크기에서도 의미가 읽히도록 단순하고 명확한 실루엣을 우선합니다.

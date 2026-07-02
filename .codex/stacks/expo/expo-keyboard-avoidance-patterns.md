@@ -2,13 +2,11 @@
 
 Use this reference after `.codex/stacks/expo/expo-keyboard-avoidance.md` decides keyboard avoidance is needed.
 
-Korean note: 키보드 회피 적용이 필요하다고 판단된 뒤 구현 예시와 검증 기준을 확인한다.
 
 ## Full-Screen Form
 
 For a simple full-screen form, use `KeyboardAvoidingView` with a scroll container when needed.
 
-Korean note: 단순 전체 화면 폼에서는 필요한 경우 KeyboardAvoidingView와 ScrollView를 함께 사용한다.
 
 ```tsx
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput } from "react-native";
@@ -34,7 +32,6 @@ export function ProfileFormScreen() {
 
 For a screen with a fixed bottom input, keep the existing structure and only protect the input area.
 
-Korean note: 하단 고정 입력 영역이 있는 화면은 전체 구조를 바꾸지 말고 입력 영역 중심으로 보호한다.
 
 ```tsx
 import { KeyboardAvoidingView, Platform, TextInput, View } from "react-native";
@@ -58,7 +55,6 @@ export function CommentScreen() {
 
 For Android-specific issues, prefer project-consistent configuration first.
 
-Korean note: Android 이슈는 먼저 프로젝트의 기존 설정과 일관된 방식으로 해결한다.
 
 Consider:
 
@@ -76,4 +72,3 @@ After applying keyboard avoidance, verify:
 - Existing layout spacing and scrolling still feel natural.
 - No duplicate keyboard avoidance wrappers were introduced.
 
-Korean note: 입력 포커스, 오류 메시지, 다음 액션, 양 플랫폼 동작, 기존 레이아웃 유지, 중복 wrapper 여부를 확인한다.

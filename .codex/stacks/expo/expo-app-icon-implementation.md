@@ -2,7 +2,6 @@
 
 Use this reference after `.codex/stacks/expo/expo-app-icon.md` decides an Expo app icon should be applied.
 
-Korean note: Expo 앱 아이콘 적용이 필요하다고 판단된 뒤 설정 예시와 검증 기준을 확인한다.
 
 ## app.json Example
 
@@ -29,7 +28,19 @@ For `app.json`, update paths similar to:
 
 For `app.config.js` or `app.config.ts`, preserve existing dynamic config logic and update only the relevant icon fields.
 
-Korean note: 동적 app config는 기존 로직을 유지하고 아이콘 관련 필드만 최소 변경한다.
+## Android Launcher Safe Area
+
+Android launchers can mask or scale adaptive icons differently. Prevent the APK-installed icon from looking zoomed by keeping the foreground artwork smaller than the full canvas.
+
+Recommended approach:
+
+- Use a `1024x1024` PNG canvas for generated source assets.
+- Keep the main foreground symbol centered.
+- Leave roughly 20% to 30% transparent padding around the foreground symbol for `adaptive-icon.png`.
+- Do not place meaningful details near the canvas edge.
+- Use `backgroundColor` for the adaptive icon background instead of baking a full-bleed background into the foreground image.
+- If an installed APK preview looks zoomed or cropped, regenerate the foreground with more padding before considering the icon complete.
+
 
 ## Verification
 
@@ -40,5 +51,5 @@ After applying:
 - Run available project checks when practical.
 - For Expo projects, prefer `npx expo config` when available to validate config resolution.
 - If web is supported, verify favicon path is configured.
+- When APK testing is available, install the APK and confirm the launcher icon is not zoomed, cropped, or visually oversized.
 
-Korean note: 파일 존재, 설정 경로, Expo config 해석, web favicon 설정을 확인한다.

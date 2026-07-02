@@ -25,6 +25,7 @@ const REQUIRED_PATHS = [
   ".codex/common/rules/frontend/styling-ui.md",
   ".codex/common/rules/frontend/icons.md",
   ".codex/common/rules/frontend/reporting.md",
+  ".codex/common/rules/build-progress.md",
   ".codex/common/rules/report.md",
   ".codex/common/rules/typescript.md",
   ".codex/common/rules/versioning.md",
@@ -38,6 +39,8 @@ const REQUIRED_PATHS = [
   ".codex/skills/worklog/agents/openai.yaml",
   ".codex/skills/handoff/SKILL.md",
   ".codex/skills/handoff/agents/openai.yaml",
+  ".codex/skills/build-progress/SKILL.md",
+  ".codex/skills/build-progress/agents/openai.yaml",
   ".codex/skills/git/SKILL.md",
   ".codex/skills/git/agents/openai.yaml",
   ".codex/skills/icon-image/SKILL.md",
@@ -60,6 +63,7 @@ const REQUIRED_PATHS = [
   ".codex/stacks/expo/expo-app-icon-implementation.md",
   ".codex/stacks/expo/expo-keyboard-avoidance.md",
   ".codex/stacks/expo/expo-keyboard-avoidance-patterns.md",
+  ".codex/stacks/expo/expo-sdk-compatibility.md",
   ".codex/stacks/expo/decisions.md",
   ".codex/stacks/expo/design.md",
   ".codex/stacks/react-native/react-native.md",
@@ -91,7 +95,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.4
+  yume-codex update v0.1.7
 `);
 }
 
