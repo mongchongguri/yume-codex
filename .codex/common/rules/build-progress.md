@@ -56,6 +56,19 @@ For Expo or React Native release builds, infer phases from logs:
 - Signing
 - Artifact generation
 
+## Expo Release Checklist Reuse
+
+For Expo release APK/AAB builds, use the versioned Expo checklist when present:
+
+```text
+.codex/stacks/expo/test/<app-name>_<app-version>.md
+```
+
+- Read the checklist before repeating release-readiness checks.
+- Skip items already marked `o` when their evidence still matches current project files and config.
+- Recheck items marked `!` or `x`, items without evidence, and items whose related files changed.
+- Update the checklist after the build with the build command, result, artifact path, warnings, and install-test status.
+
 ## Stalled Output Handling
 
 If output has not changed for a while:

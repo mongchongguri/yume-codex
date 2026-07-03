@@ -41,6 +41,8 @@ const REQUIRED_PATHS = [
   ".codex/skills/handoff/agents/openai.yaml",
   ".codex/skills/build-progress/SKILL.md",
   ".codex/skills/build-progress/agents/openai.yaml",
+  ".codex/skills/expo-release-test/SKILL.md",
+  ".codex/skills/expo-release-test/agents/openai.yaml",
   ".codex/skills/git/SKILL.md",
   ".codex/skills/git/agents/openai.yaml",
   ".codex/skills/icon-image/SKILL.md",
@@ -66,6 +68,7 @@ const REQUIRED_PATHS = [
   ".codex/stacks/expo/expo-sdk-compatibility.md",
   ".codex/stacks/expo/decisions.md",
   ".codex/stacks/expo/design.md",
+  ".codex/stacks/expo/test/.gitkeep",
   ".codex/stacks/react-native/react-native.md",
   ".codex/stacks/react-native/decisions.md",
   ".codex/stacks/react-native/design.md"
@@ -95,7 +98,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.7
+  yume-codex update v0.1.8
 `);
 }
 

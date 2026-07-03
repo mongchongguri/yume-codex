@@ -95,7 +95,7 @@ yume-codex update
 A tag, branch, or commit can also be used:
 
 ```bash
-yume-codex update v0.1.7
+yume-codex update v0.1.8
 yume-codex update main
 ```
 
@@ -124,7 +124,7 @@ yume-codex --help
 - `.codex/common/patterns/`: shared code organization patterns.
 - `.codex/common/design/`: shared UI design guidance.
 - `.codex/stacks/react/`: React stack rules and decisions.
-- `.codex/stacks/expo/`: Expo stack rules, SDK compatibility, web testing, app icon, keyboard avoidance, and decisions.
+- `.codex/stacks/expo/`: Expo stack rules, SDK compatibility, web testing, app icon, keyboard avoidance, release test reports, and decisions.
 - `.codex/stacks/react-native/`: React Native stack rules and decisions.
 - `.codex/skills/`: project skills callable from Codex.
 - `.codex/workflow/`: generated summary, worklog, and handoff files.
@@ -229,6 +229,32 @@ Main behavior:
 - Infer build phases such as dependency resolution, Expo config, Gradle configuration, JavaScript bundling, resource processing, compilation, signing, and artifact generation.
 - Report the artifact path, warnings, and result when complete.
 
+### `/expo-release-test`
+
+Checks whether an Expo app is ready for release and saves a versioned checklist report.
+
+Output:
+
+```text
+.codex/stacks/expo/test/<app-name>_<app-version>.md
+```
+
+Marker legend:
+
+- `o`: checked and passed
+- `!`: caution, warning, partial result, or needs review
+- `x`: missing, not configured, not applicable, or not run
+
+Main behavior:
+
+- Detect app name from Expo config or package metadata.
+- Detect app version from Expo config, package metadata, or native build metadata.
+- Inspect Expo SDK compatibility, assets, icon safety, splash config, permissions, environment variables, dependencies, quality gates, and release config.
+- Run available non-destructive checks such as typecheck, lint, tests, `npx expo config`, `npx expo doctor`, or `npx expo install --check`.
+- Do not run a release APK/AAB build unless the user requested a build artifact.
+- Reuse already passed `o` items from the same app/version checklist when the evidence still matches.
+- Update the same app/version report if it already exists.
+
 ### `/git`
 
 Synchronizes the current repository with the connected git remote.
@@ -296,15 +322,15 @@ Then update `CHANGELOG.md`, commit, tag, and push:
 
 ```bash
 git add .
-git commit -m "Release v0.1.7"
-git tag v0.1.7
+git commit -m "Release v0.1.8"
+git tag v0.1.8
 git push origin main --tags
 ```
 
 Install a specific version by tag:
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.7
+npm install -g github:mongchongguri/yume-codex#v0.1.8
 yume-codex rebase
 ```
 

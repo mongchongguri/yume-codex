@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8
+
+- Add `/expo-release-test` skill for Expo release-readiness checks.
+- Add `.codex/stacks/expo/test/` as the standard location for versioned Expo release test reports.
+- Reuse and update existing app/version checklists during repeated Expo release APK/AAB builds.
+
 ## 0.1.7
 
 - Add Expo SDK 56 mobile test compatibility rules for new Expo projects.

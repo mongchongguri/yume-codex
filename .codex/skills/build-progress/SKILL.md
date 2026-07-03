@@ -15,11 +15,12 @@ Keep the user informed during app builds, especially release APK or AAB builds t
 
 1. Identify the build command and expected artifact.
 2. Report the command before starting it.
-3. Run the command normally.
-4. While it runs, inspect the latest terminal output when available.
-5. Report progress about every 30 seconds.
-6. Infer the current phase from build output.
-7. On completion, report success or failure, artifact path, warnings, and next steps.
+3. For Expo release APK/AAB builds, read or create the versioned checklist at `.codex/stacks/expo/test/<app-name>_<app-version>.md` before repeating release-readiness checks.
+4. Run the command normally.
+5. While it runs, inspect the latest terminal output when available.
+6. Report progress about every 30 seconds.
+7. Infer the current phase from build output.
+8. On completion, report success or failure, artifact path, warnings, and next steps.
 
 ## Progress Report Content
 
@@ -46,6 +47,15 @@ Use these phase names when they match the output:
 - Running `assembleRelease` or `bundleRelease`
 - Signing
 - Writing APK or AAB artifact
+
+## Expo Release Checklist
+
+For Expo release APK/AAB builds:
+
+- Reuse `o` items from the matching app/version checklist when the evidence still matches current files and config.
+- Do not repeat app icon, splash, SDK compatibility, dependency, or release config checks that are already marked `o` for the same app/version.
+- Recheck items marked `!` or `x`, items with missing evidence, or items whose source files changed.
+- Update the checklist after the build with command result, artifact path, warnings, and install-test status.
 
 ## Stalled-Looking Builds
 
