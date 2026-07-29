@@ -33,6 +33,7 @@ const REQUIRED_PATHS = [
   ".codex/common/rules/versioning.md",
   ".codex/context/description.md",
   ".codex/common/design/principles.md",
+  ".codex/common/design/reference.md",
   ".codex/common/design/layout.md",
   ".codex/common/design/interaction.md",
   ".codex/skills/summary/SKILL.md",
@@ -50,6 +51,8 @@ const REQUIRED_PATHS = [
   ".codex/skills/icon-image/SKILL.md",
   ".codex/skills/icon-image/agents/openai.yaml",
   ".codex/skills/icon-image/references/implementation.md",
+  ".codex/skills/reference/SKILL.md",
+  ".codex/skills/reference/agents/openai.yaml",
   ".codex/skills/read-summary/SKILL.md",
   ".codex/skills/read-summary/agents/openai.yaml",
   ".codex/skills/read-worklog/SKILL.md",
@@ -100,7 +103,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.9
+  yume-codex update v0.1.10
 `);
 }
 

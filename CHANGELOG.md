@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.10
+
+- Add design reference rules for `.codex/context/design-description.md`.
+- Add a bundled `reference` skill workflow for converting Pinterest and UI image references into project design context.
+
 ## 0.1.9
 
 - Add encoding and text integrity rules to prevent mojibake and corrupted Korean text in generated code and documentation.

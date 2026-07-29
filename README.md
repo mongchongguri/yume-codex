@@ -95,7 +95,7 @@ yume-codex update
 A tag, branch, or commit can also be used:
 
 ```bash
-yume-codex update v0.1.9
+yume-codex update v0.1.10
 yume-codex update main
 ```
 
@@ -118,7 +118,7 @@ yume-codex --help
 ## Included Harness Structure
 
 - `AGENTS.md`: top-level Codex project instructions.
-- `.codex/context/`: project description and decision context.
+- `.codex/context/`: project description, design reference context, and decision context.
 - `.codex/common/rules/`: shared coding, reporting, TypeScript, versioning, encoding, and text integrity rules.
 - `.codex/common/rules/frontend/`: frontend state, styling, responsive CSS, icon, and reporting rules.
 - `.codex/common/patterns/`: shared code organization patterns.
@@ -148,6 +148,14 @@ When intended Korean wording is unclear, Codex should ask for the original text 
 Harness rules require new or changed CSS and layout styles to be responsive by default.
 
 Codex should preserve existing project breakpoints and verify mobile, tablet, and desktop behavior when possible.
+
+## Design Reference Context
+
+When `.codex/context/design-description.md` exists, Codex should read it before creating or changing UI.
+
+The file stores project-specific design reference guidance such as layout rhythm, component styling, typography direction, interaction tone, and adapted color direction.
+
+Visual references should guide the product feel without copying exact colors, brand palettes, logos, images, copy, or proprietary UI details.
 
 ## Included Skills
 
@@ -304,6 +312,28 @@ Safety:
 - Use transparent-background PNG for normal UI icons by default.
 - Keep the silhouette readable at small sizes.
 
+### `/reference`
+
+Analyzes a Pinterest URL, image URL, screenshot, moodboard, or visual UI reference and writes project design guidance.
+
+Output:
+
+```text
+.codex/context/design-description.md
+```
+
+Main behavior:
+
+- Inspect the visual reference with available browser, web, or image tools.
+- Extract transferable design traits such as layout rhythm, density, hierarchy, surfaces, component style, typography direction, and interaction feel.
+- Describe color direction as adapted mood and role guidance rather than exact values.
+- Create or update `.codex/context/design-description.md` so future UI work can follow the reference.
+
+Safety:
+
+- Do not copy exact colors, brand palettes, logos, illustrations, images, unique copy, or proprietary UI details from the reference.
+- Ask for a screenshot or direct image attachment when the URL is inaccessible or login-gated.
+
 ## Update Flow
 
 When the harness repository adds new rules or skills, apply them with:
@@ -334,15 +364,15 @@ Then update `CHANGELOG.md`, commit, tag, and push:
 
 ```bash
 git add .
-git commit -m "Release v0.1.9"
-git tag v0.1.9
+git commit -m "Release v0.1.10"
+git tag v0.1.10
 git push origin main --tags
 ```
 
 Install a specific version by tag:
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.9
+npm install -g github:mongchongguri/yume-codex#v0.1.10
 yume-codex rebase
 ```
 

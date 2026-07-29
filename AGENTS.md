@@ -17,6 +17,11 @@ Read the project description before making implementation decisions.
 
 - `.codex/context/description.md`
 
+Read the project design reference before making UI design decisions when it exists.
+
+
+- `.codex/context/design-description.md`
+
 ## Common Rules
 
 Use the shared rules for comments, reporting, and general coding conventions.
@@ -52,6 +57,7 @@ Use the shared design rules and stack-specific design rules when building UI.
 
 
 - Principles: `.codex/common/design/principles.md`
+- Reference: `.codex/common/design/reference.md`
 - Layout: `.codex/common/design/layout.md`
 - Interaction: `.codex/common/design/interaction.md`
 - React: `.codex/stacks/react/design.md`

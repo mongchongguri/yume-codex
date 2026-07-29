@@ -60,6 +60,15 @@ Use soft, friendly pastel tones as the default base for new visual systems.
 - Do not introduce a new visual system when the project already has one.
 
 
+## Project Design Reference
+
+If `.codex/context/design-description.md` exists, read it before creating or changing UI.
+
+- Use it as project-specific direction for visual tone, layout rhythm, component styling, typography, and interaction feel.
+- Do not copy exact colors, assets, brand details, or proprietary UI from its source references.
+- Keep accessibility, responsive behavior, platform conventions, and explicit user requirements higher priority than the reference.
+
+
 ## Existing Project Adoption
 
 When this harness is added to an existing project, follow the project's current design system before applying new defaults.
