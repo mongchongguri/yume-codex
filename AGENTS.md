@@ -25,8 +25,10 @@ Use the shared rules for comments, reporting, and general coding conventions.
 - `.codex/common/rules`
 - TypeScript only: `.codex/common/rules/typescript.md`
 - Version selection: `.codex/common/rules/versioning.md`
+- Encoding and text integrity: `.codex/common/rules/encoding.md`
 - Build progress reporting: `.codex/common/rules/build-progress.md`
 - Frontend decisions: `.codex/common/rules/frontend-decisions.md`
+- Responsive CSS: `.codex/common/rules/frontend/responsive-css.md`
 
 ## Stack Rules
 

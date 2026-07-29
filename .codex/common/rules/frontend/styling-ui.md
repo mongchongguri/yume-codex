@@ -37,6 +37,13 @@ Use the styling system and UI library defined by the active stack's `decisions.m
 - React Native: `.codex/stacks/react-native/decisions.md`
 
 
+## Responsive CSS
+
+When creating or changing CSS, layout styles, Tailwind classes, styled-components, or inline style objects, follow:
+
+- `.codex/common/rules/frontend/responsive-css.md`
+
+
 ## CSS-In-JS
 
 Use CSS-in-JS tools such as styled-components only when:

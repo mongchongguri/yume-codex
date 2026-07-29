@@ -23,9 +23,11 @@ const REQUIRED_PATHS = [
   ".codex/common/rules/frontend-decisions.md",
   ".codex/common/rules/frontend/state.md",
   ".codex/common/rules/frontend/styling-ui.md",
+  ".codex/common/rules/frontend/responsive-css.md",
   ".codex/common/rules/frontend/icons.md",
   ".codex/common/rules/frontend/reporting.md",
   ".codex/common/rules/build-progress.md",
+  ".codex/common/rules/encoding.md",
   ".codex/common/rules/report.md",
   ".codex/common/rules/typescript.md",
   ".codex/common/rules/versioning.md",
@@ -98,7 +100,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.8
+  yume-codex update v0.1.9
 `);
 }
 

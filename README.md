@@ -95,7 +95,7 @@ yume-codex update
 A tag, branch, or commit can also be used:
 
 ```bash
-yume-codex update v0.1.8
+yume-codex update v0.1.9
 yume-codex update main
 ```
 
@@ -119,8 +119,8 @@ yume-codex --help
 
 - `AGENTS.md`: top-level Codex project instructions.
 - `.codex/context/`: project description and decision context.
-- `.codex/common/rules/`: shared coding, reporting, TypeScript, and versioning rules.
-- `.codex/common/rules/frontend/`: frontend state, styling, icon, and reporting rules.
+- `.codex/common/rules/`: shared coding, reporting, TypeScript, versioning, encoding, and text integrity rules.
+- `.codex/common/rules/frontend/`: frontend state, styling, responsive CSS, icon, and reporting rules.
 - `.codex/common/patterns/`: shared code organization patterns.
 - `.codex/common/design/`: shared UI design guidance.
 - `.codex/stacks/react/`: React stack rules and decisions.
@@ -136,6 +136,18 @@ Generated `.codex/workflow/**/*.md` files are excluded from git and package dist
 Harness Markdown files are written in English.
 
 User-facing progress reports, completion reports, and option prompts should be written in Korean when the user is working in Korean.
+
+## Encoding And Text Integrity
+
+Harness rules require UTF-8 text handling and prohibit adding garbled Korean, replacement characters, or mojibake to code, comments, UI copy, logs, SQL, XML, Markdown, and configuration files.
+
+When intended Korean wording is unclear, Codex should ask for the original text or use a neutral English placeholder instead of inventing corrupted text.
+
+## Responsive CSS
+
+Harness rules require new or changed CSS and layout styles to be responsive by default.
+
+Codex should preserve existing project breakpoints and verify mobile, tablet, and desktop behavior when possible.
 
 ## Included Skills
 
@@ -322,15 +334,15 @@ Then update `CHANGELOG.md`, commit, tag, and push:
 
 ```bash
 git add .
-git commit -m "Release v0.1.8"
-git tag v0.1.8
+git commit -m "Release v0.1.9"
+git tag v0.1.9
 git push origin main --tags
 ```
 
 Install a specific version by tag:
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.8
+npm install -g github:mongchongguri/yume-codex#v0.1.9
 yume-codex rebase
 ```
 

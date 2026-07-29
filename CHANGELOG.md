@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.9
+
+- Add encoding and text integrity rules to prevent mojibake and corrupted Korean text in generated code and documentation.
+- Add shared responsive CSS rules for mobile-first layouts, overflow prevention, and viewport verification.
+
 ## 0.1.8
 
 - Add `/expo-release-test` skill for Expo release-readiness checks.

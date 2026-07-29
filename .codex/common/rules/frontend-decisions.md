@@ -18,6 +18,7 @@ When adding this harness to an existing project, treat the existing codebase as 
 
 - State management: `.codex/common/rules/frontend/state.md`
 - Styling and UI libraries: `.codex/common/rules/frontend/styling-ui.md`
+- Responsive CSS: `.codex/common/rules/frontend/responsive-css.md`
 - Icons: `.codex/common/rules/frontend/icons.md`
 - Decision reporting: `.codex/common/rules/frontend/reporting.md`
 
