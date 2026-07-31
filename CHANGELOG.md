@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.11
+
+- Add calendar and date picker rules that require proven libraries instead of hand-built calendar behavior.
+- Add component structure choice guidance for layer-first and feature-first project organization.
+
 ## 0.1.10
 
 - Add design reference rules for `.codex/context/design-description.md`.

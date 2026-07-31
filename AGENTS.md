@@ -34,6 +34,7 @@ Use the shared rules for comments, reporting, and general coding conventions.
 - Build progress reporting: `.codex/common/rules/build-progress.md`
 - Frontend decisions: `.codex/common/rules/frontend-decisions.md`
 - Responsive CSS: `.codex/common/rules/frontend/responsive-css.md`
+- Calendars and date pickers: `.codex/common/rules/frontend/calendar.md`
 
 ## Stack Rules
 

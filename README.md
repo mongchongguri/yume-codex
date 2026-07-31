@@ -95,7 +95,7 @@ yume-codex update
 A tag, branch, or commit can also be used:
 
 ```bash
-yume-codex update v0.1.10
+yume-codex update v0.1.11
 yume-codex update main
 ```
 
@@ -120,7 +120,7 @@ yume-codex --help
 - `AGENTS.md`: top-level Codex project instructions.
 - `.codex/context/`: project description, design reference context, and decision context.
 - `.codex/common/rules/`: shared coding, reporting, TypeScript, versioning, encoding, and text integrity rules.
-- `.codex/common/rules/frontend/`: frontend state, styling, responsive CSS, icon, and reporting rules.
+- `.codex/common/rules/frontend/`: frontend state, styling, responsive CSS, calendar, icon, and reporting rules.
 - `.codex/common/patterns/`: shared code organization patterns.
 - `.codex/common/design/`: shared UI design guidance.
 - `.codex/stacks/react/`: React stack rules and decisions.
@@ -148,6 +148,12 @@ When intended Korean wording is unclear, Codex should ask for the original text 
 Harness rules require new or changed CSS and layout styles to be responsive by default.
 
 Codex should preserve existing project breakpoints and verify mobile, tablet, and desktop behavior when possible.
+
+## Calendars And Date Pickers
+
+Harness rules require calendar views, date pickers, date range pickers, scheduling UI, and reminder date selection to use a proven library instead of hand-built calendar behavior.
+
+Codex should reuse the project's active UI library when it has suitable date components, default calendars to Korean locale, visually distinguish Saturdays in blue and Sundays in red, and verify stack compatibility before adding a new package.
 
 ## Design Reference Context
 
@@ -364,15 +370,15 @@ Then update `CHANGELOG.md`, commit, tag, and push:
 
 ```bash
 git add .
-git commit -m "Release v0.1.10"
-git tag v0.1.10
+git commit -m "Release v0.1.11"
+git tag v0.1.11
 git push origin main --tags
 ```
 
 Install a specific version by tag:
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.10
+npm install -g github:mongchongguri/yume-codex#v0.1.11
 yume-codex rebase
 ```
 

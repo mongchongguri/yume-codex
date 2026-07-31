@@ -22,6 +22,42 @@ Separate full screens from reusable UI pieces and feature-specific logic.
 - `type`: shared data shapes
 
 
+## Structure Choice
+
+Prefer a layer-first structure for small apps, prototypes, or apps with one primary feature.
+
+Use this shape when most screens share the same small set of components, hooks, services, and types:
+
+```text
+src/
+  screens/
+  components/
+  hooks/
+  services/
+  types/
+  constants/
+```
+
+Prefer a feature-first structure when the app has multiple independent domains, or when one domain owns several screens, components, hooks, services, and types.
+
+Use this shape when keeping domain code together makes navigation and ownership clearer:
+
+```text
+src/
+  features/
+    reminders/
+      screens/
+      components/
+      hooks/
+      services/
+      types/
+```
+
+Do not introduce a feature folder for a single simple screen unless the feature is expected to grow or already contains meaningful domain logic.
+
+When in doubt, start layer-first and move to feature-first only when the code shows real domain boundaries.
+
+
 ## When To Split
 
 Consider splitting when:

@@ -44,6 +44,13 @@ When creating or changing CSS, layout styles, Tailwind classes, styled-component
 - `.codex/common/rules/frontend/responsive-css.md`
 
 
+## Calendars And Date Pickers
+
+When creating calendar views, date pickers, date range pickers, scheduling UI, or reminder date selection, follow:
+
+- `.codex/common/rules/frontend/calendar.md`
+
+
 ## CSS-In-JS
 
 Use CSS-in-JS tools such as styled-components only when:
