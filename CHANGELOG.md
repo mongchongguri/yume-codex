@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.12
+
+- Add a bundled `planning` skill for creating and updating `.codex/context/description.md` project plans.
+- Record planning updates in `.codex/context/update.md` when existing plans are changed.
+
 ## 0.1.11
 
 - Add calendar and date picker rules that require proven libraries instead of hand-built calendar behavior.

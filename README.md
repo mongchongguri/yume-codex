@@ -95,7 +95,7 @@ yume-codex update
 A tag, branch, or commit can also be used:
 
 ```bash
-yume-codex update v0.1.11
+yume-codex update v0.1.12
 yume-codex update main
 ```
 
@@ -318,6 +318,29 @@ Safety:
 - Use transparent-background PNG for normal UI icons by default.
 - Keep the silhouette readable at small sizes.
 
+### `/planning`
+
+Creates or updates project planning context for Codex-managed projects.
+
+Primary output:
+
+```text
+.codex/context/description.md
+```
+
+Update log:
+
+```text
+.codex/context/update.md
+```
+
+Main behavior:
+
+- Turn a project idea into a practical implementation plan.
+- Use `.codex/context/description.md` as the source of truth for project purpose, users, goals, requirements, technical direction, phases, risks, and open questions.
+- Update an existing plan in place when requirements change.
+- Record what changed in `.codex/context/update.md` when updating an existing plan.
+
 ### `/reference`
 
 Analyzes a Pinterest URL, image URL, screenshot, moodboard, or visual UI reference and writes project design guidance.
@@ -370,15 +393,15 @@ Then update `CHANGELOG.md`, commit, tag, and push:
 
 ```bash
 git add .
-git commit -m "Release v0.1.11"
-git tag v0.1.11
+git commit -m "Release v0.1.12"
+git tag v0.1.12
 git push origin main --tags
 ```
 
 Install a specific version by tag:
 
 ```bash
-npm install -g github:mongchongguri/yume-codex#v0.1.11
+npm install -g github:mongchongguri/yume-codex#v0.1.12
 yume-codex rebase
 ```
 

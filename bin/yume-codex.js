@@ -52,6 +52,8 @@ const REQUIRED_PATHS = [
   ".codex/skills/icon-image/SKILL.md",
   ".codex/skills/icon-image/agents/openai.yaml",
   ".codex/skills/icon-image/references/implementation.md",
+  ".codex/skills/planning/SKILL.md",
+  ".codex/skills/planning/agents/openai.yaml",
   ".codex/skills/reference/SKILL.md",
   ".codex/skills/reference/agents/openai.yaml",
   ".codex/skills/read-summary/SKILL.md",
@@ -104,7 +106,7 @@ Examples:
   yume-codex init
   yume-codex rebase
   yume-codex update
-  yume-codex update v0.1.11
+  yume-codex update v0.1.12
 `);
 }
 
