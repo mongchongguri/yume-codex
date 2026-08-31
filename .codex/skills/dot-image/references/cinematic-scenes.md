@@ -5,6 +5,7 @@ Use this reference for full-screen or panoramic `scene` assets. Create an origin
 ## Composition
 
 - Build four readable depth bands: near-black foreground framing, the gameplay plane, a detailed midground, and a quieter background.
+- Use a fixed orthographic side-on camera. Keep the gameplay plane and primary architecture parallel to the canvas with no vanishing-point convergence.
 - Use foreground cables, beams, foliage, masonry, or other silhouettes to frame the scene without obscuring the playable route.
 - Keep the gameplay plane continuous and readable. Props, plants, reflections, and debris may enrich it but must not hide traversal edges.
 - Favor controlled asymmetry and clusters of detail separated by calmer areas. Avoid evenly distributing objects across the canvas.
@@ -57,5 +58,6 @@ Reject or regenerate the scene when:
 - Foreground framing covers important traversal space.
 - Detail is evenly noisy instead of clustered into readable areas.
 - Lighting becomes smooth painted glow rather than stepped pixel clusters.
+- Architecture, roads, or the gameplay plane drift into isometric or perspective projection.
 - Text, logos, or reference-specific arrangements appear.
 - The scene only reads when enlarged and collapses at the `640x360` working grid.

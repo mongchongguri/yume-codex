@@ -320,30 +320,37 @@ Safety:
 
 ### `/dot-image`
 
-Generates expressive modern pixel-art characters, animation sheets, cinematic side-scrolling scenes, layered backgrounds, and icons, then normalizes them with a deterministic Pillow harness. The default theme is `fantasy`; selectable presets are `sci-fi`, `modern`, `cute`, and `horror`.
+Generates expressive modern pixel-art characters, in-world objects, animation sheets, cinematic side-scrolling scenes, layered backgrounds, and icons, then normalizes them with a deterministic Pillow harness. The default theme is `fantasy`; selectable presets are `sci-fi`, `modern`, `cute`, and `horror`.
 
 Main behavior:
 
 - Save generated source PNG files to `src/assets/raw/`.
 - Apply the requested theme, or `fantasy` when the theme is omitted.
+- Apply the reusable `cinematic-sd` style profile by default, or a project `.codex/context/dot-style.json` override, so independently generated assets retain one palette family and pixel language.
 - Use deliberate pixel clusters, distinctive silhouettes, selective colored outlines, rich cool shadows, and focused warm highlights.
-- Apply separate character, environment, and icon rules so atmospheric scenery can retain depth without softening gameplay sprites.
-- Apply the fixed `char`, `bg`, `scene`, or `icon` working grid and nearest-neighbor scaling.
+- Default humanoid characters to readable 2.5-to-3-head SD proportions unless another proportion is requested.
+- Apply separate character, object, environment, and icon rules so atmospheric scenery can retain depth without softening gameplay sprites or world props.
+- Apply the fixed `char`, `object`, `bg`, `scene`, or `icon` working grid and nearest-neighbor scaling.
 - Use a high-density `scene` grid with layered foreground framing, a readable gameplay plane, environmental storytelling, and scene-wide color scripts.
-- Remove connected black isolation backgrounds from character assets.
+- Default to orthographic 2D projection: side view for characters and environments, front view for icons, with explicit front and top-down overrides.
+- Remove connected black isolation backgrounds from character and object assets.
 - Limit the palette, remove partial alpha, and verify every enlarged pixel block.
-- Split animation sheets into frames, align character frames, and apply one shared palette across the sequence to reduce jitter and color flicker.
+- Split animation sheets into frames, align character and object frames, and apply one shared palette across the sequence to reduce jitter and color flicker.
+- Link scene-bound assets to a verified background palette with `--palette-reference`, then build mood previews with the deterministic nearest-neighbor compositor so source designs are not redrawn.
 - Emit a clean sprite sheet, individual frame PNGs, and an animation manifest containing layout, timing, playback, and anchor metadata.
 - Save verified PNG files and an audit log to `src/assets/clean/`.
 
 Output sizes:
 
 - Character: `64x64` working grid to `256x256` output.
+- World object: `64x64` working grid to `256x256` output, with scene-matched palette, lighting, outlines, and a stable bottom-center anchor.
 - Background: `128x128` working grid to `512x512` output.
 - Cinematic scene: `640x360` working grid to `1280x720` output.
 - Icon: `32x32` working grid to `128x128` output.
 
-Use `$dot-image` explicitly or request a pixel-art game asset. Select a preset with `--theme <fantasy|sci-fi|modern|cute|horror>` when running the bundled `dot_harness.py`; omitting it selects `fantasy`. Use `--scale 1` for native working-grid output. Animation mode is enabled with `--frames <count>` and supports `--columns`, `--animation`, `--fps`, `--anchor`, and `--playback`. Pillow must be available to run the script.
+Use `$dot-image` explicitly or request a pixel-art game asset. `--style-profile auto` uses project `.codex/context/dot-style.json` when present and otherwise the bundled `cinematic-sd` profile; `none` disables it for explicit experiments. Select a preset with `--theme <fantasy|sci-fi|modern|cute|horror>`; omitting it selects `fantasy`. Select an orthographic viewpoint with `--view <side|front|top-down>`; omitting it uses the asset default. Use `--scale 1` for native working-grid output. Animation mode is enabled with `--frames <count>` and supports `--columns`, `--animation`, `--fps`, `--anchor`, and `--playback`. Pillow must be available to run the script.
+
+For a shared scene palette, add `--palette-reference <clean-background>.png` when processing a character or object variant. Compose verified assets without generative redesign using `.codex/skills/dot-image/scripts/scene_compositor.py`; layer coordinates and heights use background working-grid pixels and are recorded in a `.composition.json` manifest.
 
 ### `/planning`
 

@@ -1,6 +1,6 @@
 interface:
   display_name: "Dot Image"
-  short_description: "Generate pixel-art assets, scenes, and animations."
-  default_prompt: "Use $dot-image to generate an expressive pixel-art asset, cinematic scene, or animation with verified output, using fantasy by default or another theme I choose."
+  short_description: "Generate and integrate verified pixel-art asset sets."
+  default_prompt: "Use $dot-image to generate or integrate a cohesive pixel-art asset set with the reusable cinematic SD style profile, verified grids, and fantasy as the default theme unless I choose another."
 policy:
   allow_implicit_invocation: true

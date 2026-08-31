@@ -8,6 +8,7 @@ Read this reference only when creating animation frames or sprite sheets.
 - Arrange frames left to right, then top to bottom. Keep every frame fully inside its cell.
 - Use transparent alpha when reliable. A solid black isolation background is acceptable for `char` sheets because the harness removes border-connected dark pixels per frame.
 - Keep the subject at a consistent scale, facing direction, camera angle, lighting direction, costume, equipment, and palette role.
+- Keep one fixed orthographic 2D view across every frame. Never rotate, tilt, zoom, or orbit the camera during an animation.
 - Leave enough empty space for moving ears, tails, weapons, splashes, particles, and anticipation poses.
 - Describe distinct key poses in the generation prompt. Do not ask only for several nearly identical copies.
 
@@ -54,5 +55,6 @@ The raw sheet dimensions must divide evenly into the requested columns and calcu
 
 - Inspect each frame at the native working-grid size, not only an enlarged preview.
 - Flip rapidly between adjacent frames to detect outline crawl, palette flicker, volume changes, and anchor jitter.
+- Confirm every frame uses the same recorded 2D view with no perspective or camera drift.
 - Preview at the manifest FPS and playback mode.
 - Reject sheets with cropped motion, inconsistent identity, accidental camera movement, partial alpha, blurred edges, or an unreadable loop boundary.

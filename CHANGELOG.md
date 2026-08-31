@@ -10,6 +10,10 @@
 - Add asset-specific art-direction guidance and tighter character and icon palette limits to reduce glossy mobile-style rendering.
 - Extend the `dot-image` harness with sprite-sheet splitting, frame alignment, shared animation palettes, configurable output scale, individual frame exports, and animation manifests.
 - Add a high-density `scene` asset type with aspect-preserving crops and cinematic side-scrolling environment guidance.
+- Make orthographic 2D the default projection and record explicit side, front, or top-down views in harness logs and animation manifests.
+- Add a dedicated `object` asset type with scene-matched art-direction rules, 2D side-view defaults, isolation-background cleanup, and stable animation anchoring.
+- Add scene integration with SD-character defaults, background-influenced palette linking, and a deterministic nearest-neighbor compositor that records working-grid placement manifests.
+- Add a reusable default `cinematic-sd` style profile with prompt terms and a fixed candidate palette, plus project-level profile overrides so new assets stay cohesive without an existing background.
 
 ## 0.1.12
 

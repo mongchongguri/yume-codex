@@ -16,6 +16,7 @@ from PIL import Image
 
 SPECS = {
     "char": {"target": (64, 64), "scale": 4, "colors": 32},
+    "object": {"target": (64, 64), "scale": 4, "colors": 40},
     "bg": {"target": (128, 128), "scale": 4, "colors": 72},
     "scene": {"target": (640, 360), "scale": 2, "colors": 128},
     "icon": {"target": (32, 32), "scale": 4, "colors": 16},
@@ -30,6 +31,68 @@ THEMES = {
 }
 
 ART_DIRECTION = "expressive-modern-pixel"
+PROJECTION = "orthographic-2d"
+VIEWS = ("side", "front", "top-down")
+DEFAULT_VIEWS = {
+    "char": "side",
+    "object": "side",
+    "bg": "side",
+    "scene": "side",
+    "icon": "front",
+}
+DEFAULT_STYLE_PROFILE = "cinematic-sd.json"
+BUNDLED_PROFILE_DIR = Path(__file__).resolve().parent.parent / "references" / "profiles"
+
+
+def parse_hex_color(value: str) -> tuple[int, int, int]:
+    if len(value) != 7 or not value.startswith("#"):
+        raise ValueError(f"Invalid style-profile color: {value}")
+    try:
+        return tuple(int(value[index : index + 2], 16) for index in (1, 3, 5))
+    except ValueError as error:
+        raise ValueError(f"Invalid style-profile color: {value}") from error
+
+
+def load_style_profile(
+    project_root: Path,
+    requested: str,
+) -> tuple[dict[str, object] | None, Path | None]:
+    if requested == "none":
+        return None, None
+
+    project_profile = project_root / ".codex" / "context" / "dot-style.json"
+    if requested == "auto":
+        profile_path = (
+            project_profile
+            if project_profile.is_file()
+            else BUNDLED_PROFILE_DIR / DEFAULT_STYLE_PROFILE
+        )
+    else:
+        safe_name = Path(requested).name
+        if safe_name != requested or Path(safe_name).suffix.lower() != ".json":
+            raise ValueError(
+                "Style profile must be auto, none, or a plain .json filename"
+            )
+        project_candidate = project_root / ".codex" / "context" / safe_name
+        bundled_candidate = BUNDLED_PROFILE_DIR / safe_name
+        profile_path = (
+            project_candidate if project_candidate.is_file() else bundled_candidate
+        )
+
+    if not profile_path.is_file():
+        raise FileNotFoundError(f"Style profile not found: {profile_path}")
+    try:
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"Invalid style-profile JSON: {profile_path}") from error
+    if profile.get("version") != 1 or not isinstance(profile.get("name"), str):
+        raise ValueError("Style profile requires version 1 and a string name")
+    palette = profile.get("palette")
+    colors = palette.get("colors") if isinstance(palette, dict) else None
+    if not isinstance(colors, list) or not 8 <= len(colors) <= 256:
+        raise ValueError("Style profile requires 8 to 256 palette colors")
+    profile["palette_rgb"] = [parse_hex_color(str(color)) for color in colors]
+    return profile, profile_path
 
 
 def remove_connected_dark_background(image: Image.Image, threshold: int = 32) -> Image.Image:
@@ -87,11 +150,66 @@ def resize_to_target(image: Image.Image, target: tuple[int, int]) -> Image.Image
     return image.resize(target, Image.Resampling.NEAREST)
 
 
+def palette_image(colors: list[tuple[int, int, int]]) -> Image.Image:
+    if not colors:
+        raise ValueError("Palette requires at least one color")
+    palette = Image.new("P", (1, 1))
+    values = [channel for color in colors for channel in color]
+    values.extend(list(colors[-1]) * (256 - len(colors)))
+    palette.putpalette(values)
+    return palette
+
+
+def select_profile_colors(
+    toned: Image.Image,
+    alpha: Image.Image,
+    candidates: list[tuple[int, int, int]],
+    color_count: int,
+    palette_reference: Image.Image | None,
+) -> list[tuple[int, int, int]]:
+    limit = min(color_count, len(candidates))
+    full_palette = palette_image(candidates)
+    mapped = toned.quantize(palette=full_palette, dither=Image.Dither.NONE)
+    current_counts = [0] * len(candidates)
+    for index, alpha_value in zip(mapped.tobytes(), alpha.tobytes()):
+        if alpha_value >= 128 and index < len(current_counts):
+            current_counts[index] += 1
+
+    reference_counts = [0] * len(candidates)
+    if palette_reference is not None:
+        reference = palette_reference.convert("RGB").resize(
+            toned.size,
+            Image.Resampling.NEAREST,
+        )
+        mapped_reference = reference.quantize(
+            palette=full_palette,
+            dither=Image.Dither.NONE,
+        )
+        for index in mapped_reference.tobytes():
+            if index < len(reference_counts):
+                reference_counts[index] += 1
+
+    current_total = max(1, sum(current_counts))
+    reference_total = max(1, sum(reference_counts))
+    ranked = sorted(
+        range(len(candidates)),
+        key=lambda index: (
+            current_counts[index] / current_total
+            + reference_counts[index] / reference_total,
+            -index,
+        ),
+        reverse=True,
+    )
+    return [candidates[index] for index in ranked[:limit]]
+
+
 def normalize_palette(
     image: Image.Image,
     color_count: int,
     rgb_multipliers: tuple[float, float, float],
     brightness_lift: int,
+    palette_reference: Image.Image | None = None,
+    profile_palette: list[tuple[int, int, int]] | None = None,
 ) -> Image.Image:
     """Apply theme toning, a deliberate compact palette, and binary transparency."""
     red, green, blue, alpha = image.split()
@@ -100,11 +218,41 @@ def normalize_palette(
     green = green.point(lambda value: min(255, round(value * green_scale) + brightness_lift))
     blue = blue.point(lambda value: min(255, round(value * blue_scale) + brightness_lift))
     toned = Image.merge("RGB", (red, green, blue))
-    quantized = toned.quantize(
-        colors=color_count,
-        method=Image.Quantize.MEDIANCUT,
-        dither=Image.Dither.NONE,
-    ).convert("RGB")
+    if profile_palette is not None:
+        selected = select_profile_colors(
+            toned,
+            alpha,
+            profile_palette,
+            color_count,
+            palette_reference,
+        )
+        quantized = toned.quantize(
+            palette=palette_image(selected),
+            dither=Image.Dither.NONE,
+        ).convert("RGB")
+    elif palette_reference is None:
+        quantized = toned.quantize(
+            colors=color_count,
+            method=Image.Quantize.MEDIANCUT,
+            dither=Image.Dither.NONE,
+        ).convert("RGB")
+    else:
+        reference = palette_reference.convert("RGB").resize(
+            image.size,
+            Image.Resampling.NEAREST,
+        )
+        palette_source = Image.new("RGB", (image.width * 2, image.height))
+        palette_source.paste(reference, (0, 0))
+        palette_source.paste(toned, (image.width, 0))
+        shared_palette = palette_source.quantize(
+            colors=color_count,
+            method=Image.Quantize.MEDIANCUT,
+            dither=Image.Dither.NONE,
+        )
+        quantized = toned.quantize(
+            palette=shared_palette,
+            dither=Image.Dither.NONE,
+        ).convert("RGB")
     binary_alpha = alpha.point(lambda value: 255 if value >= 128 else 0)
     quantized.putalpha(binary_alpha)
     transparent = Image.new("RGBA", image.size, (0, 0, 0, 0))
@@ -219,6 +367,8 @@ def normalize_frames_with_shared_palette(
     target: tuple[int, int],
     color_count: int,
     theme_spec: dict[str, object],
+    palette_reference: Image.Image | None = None,
+    profile_palette: list[tuple[int, int, int]] | None = None,
 ) -> list[Image.Image]:
     """Quantize all frames together so equivalent colors do not flicker."""
     palette_strip = Image.new(
@@ -234,6 +384,8 @@ def normalize_frames_with_shared_palette(
         color_count,
         theme_spec["rgb"],
         theme_spec["lift"],
+        palette_reference,
+        profile_palette,
     )
     return [
         normalized_strip.crop(
@@ -259,6 +411,11 @@ def run_static_harness(
     project_root: Path,
     theme: str,
     output_scale: int,
+    view: str,
+    palette_reference: Image.Image | None = None,
+    palette_reference_path: Path | None = None,
+    style_profile: dict[str, object] | None = None,
+    style_profile_path: Path | None = None,
 ) -> Path:
     spec = SPECS[asset_type]
     theme_spec = THEMES[theme]
@@ -266,7 +423,7 @@ def run_static_harness(
     with Image.open(raw_path) as source:
         small = resize_to_target(source.convert("RGBA"), target)
 
-    if asset_type == "char":
+    if asset_type in {"char", "object"}:
         small = remove_connected_dark_background(small)
 
     color_count = max(8, round(spec["colors"] * theme_spec["palette_scale"]))
@@ -275,6 +432,8 @@ def run_static_harness(
         color_count,
         theme_spec["rgb"],
         theme_spec["lift"],
+        palette_reference,
+        style_profile.get("palette_rgb") if style_profile is not None else None,
     )
     final_size = (target[0] * output_scale, target[1] * output_scale)
     final = normalized.resize(final_size, Image.Resampling.NEAREST)
@@ -289,17 +448,34 @@ def run_static_harness(
             "mode": "static",
             "asset_type": asset_type,
             "theme": theme,
+            "projection": PROJECTION,
+            "view": view,
             "art_direction": ART_DIRECTION,
             "raw_path": raw_path.relative_to(project_root).as_posix(),
             "clean_path": clean_path.relative_to(project_root).as_posix(),
             "working_grid": list(target),
             "output_scale": output_scale,
+            "palette_reference": (
+                palette_reference_path.relative_to(project_root).as_posix()
+                if palette_reference_path is not None
+                else None
+            ),
+            "style_profile": (
+                str(style_profile["name"]) if style_profile is not None else None
+            ),
+            "style_profile_path": (
+                style_profile_path.relative_to(project_root).as_posix()
+                if style_profile_path is not None
+                and style_profile_path.is_relative_to(project_root)
+                else str(style_profile_path) if style_profile_path is not None else None
+            ),
             **verification,
         },
     )
 
     print(
-        f"[Harness Success] {ART_DIRECTION}/{theme}/{asset_type} static asset verified: "
+        f"[Harness Success] {ART_DIRECTION}/{PROJECTION}/{view}/{theme}/{asset_type} "
+        f"static asset verified: "
         f"{clean_path} ({verification['width']}x{verification['height']}, "
         f"{verification['visible_colors']} visible colors)"
     )
@@ -319,6 +495,11 @@ def run_animation_harness(
     fps: int,
     anchor: str,
     playback: str,
+    view: str,
+    palette_reference: Image.Image | None = None,
+    palette_reference_path: Path | None = None,
+    style_profile: dict[str, object] | None = None,
+    style_profile_path: Path | None = None,
 ) -> Path:
     spec = SPECS[asset_type]
     theme_spec = THEMES[theme]
@@ -332,7 +513,7 @@ def run_animation_harness(
     offsets = []
     for index, source_frame in enumerate(source_frames):
         frame = resize_to_target(source_frame, target)
-        if asset_type == "char":
+        if asset_type in {"char", "object"}:
             frame = remove_connected_dark_background(frame)
         frame, offset = align_frame(frame, anchor, index)
         prepared_frames.append(frame)
@@ -343,6 +524,8 @@ def run_animation_harness(
         target,
         color_count,
         theme_spec,
+        palette_reference,
+        style_profile.get("palette_rgb") if style_profile is not None else None,
     )
     final_size = (target[0] * output_scale, target[1] * output_scale)
     final_frames = []
@@ -400,6 +583,8 @@ def run_animation_harness(
         "name": animation_name,
         "asset_type": asset_type,
         "theme": theme,
+        "projection": PROJECTION,
+        "view": view,
         "art_direction": ART_DIRECTION,
         "fps": fps,
         "playback": playback,
@@ -407,6 +592,14 @@ def run_animation_harness(
         "working_grid": {"width": target[0], "height": target[1]},
         "output_scale": output_scale,
         "anchor": anchor,
+        "palette_reference": (
+            palette_reference_path.relative_to(project_root).as_posix()
+            if palette_reference_path is not None
+            else None
+        ),
+        "style_profile": (
+            str(style_profile["name"]) if style_profile is not None else None
+        ),
         "layout": {
             "columns": columns,
             "rows": rows,
@@ -429,6 +622,8 @@ def run_animation_harness(
             "mode": "animation",
             "asset_type": asset_type,
             "theme": theme,
+            "projection": PROJECTION,
+            "view": view,
             "art_direction": ART_DIRECTION,
             "animation": animation_name,
             "fps": fps,
@@ -439,6 +634,14 @@ def run_animation_harness(
             "anchor": anchor,
             "working_grid": list(target),
             "output_scale": output_scale,
+            "palette_reference": (
+                palette_reference_path.relative_to(project_root).as_posix()
+                if palette_reference_path is not None
+                else None
+            ),
+            "style_profile": (
+                str(style_profile["name"]) if style_profile is not None else None
+            ),
             "raw_path": raw_path.relative_to(project_root).as_posix(),
             "clean_path": clean_path.relative_to(project_root).as_posix(),
             "manifest_path": manifest_path.relative_to(project_root).as_posix(),
@@ -452,7 +655,8 @@ def run_animation_harness(
         },
     )
     print(
-        f"[Harness Success] {ART_DIRECTION}/{theme}/{asset_type} animation verified: "
+        f"[Harness Success] {ART_DIRECTION}/{PROJECTION}/{view}/{theme}/{asset_type} "
+        f"animation verified: "
         f"{clean_path} ({frame_count} frames, {final_size[0]}x{final_size[1]} each, "
         f"{fps} fps; manifest: {manifest_path})"
     )
@@ -471,15 +675,25 @@ def run_harness(
     fps: int = 8,
     anchor: str = "auto",
     playback: str = "loop",
+    view: str = "auto",
+    palette_reference_filename: str | None = None,
+    style_profile_requested: str = "auto",
 ) -> Path:
     if asset_type not in SPECS:
         raise ValueError(f"Unknown asset type: {asset_type}")
     if theme not in THEMES:
         raise ValueError(f"Unknown theme: {theme}")
+    if view != "auto" and view not in VIEWS:
+        raise ValueError(f"Unknown 2D view: {view}")
     if frame_count < 1:
         raise ValueError("Frame count must be at least 1")
     if fps < 1 or fps > 60:
         raise ValueError("FPS must be between 1 and 60")
+
+    style_profile, style_profile_path = load_style_profile(
+        project_root,
+        style_profile_requested,
+    )
 
     safe_filename = Path(filename).name
     if safe_filename != filename or Path(safe_filename).suffix.lower() != ".png":
@@ -490,7 +704,29 @@ def run_harness(
     if not raw_path.is_file():
         raise FileNotFoundError(f"Raw image not found: {raw_path}")
 
+    palette_reference_path = None
+    palette_reference = None
+    if palette_reference_filename is not None:
+        safe_reference = Path(palette_reference_filename).name
+        if (
+            safe_reference != palette_reference_filename
+            or Path(safe_reference).suffix.lower() != ".png"
+        ):
+            raise ValueError(
+                "Palette reference must be a plain .png filename without directories"
+            )
+        palette_reference_path = (
+            project_root / "src" / "assets" / "clean" / safe_reference
+        )
+        if not palette_reference_path.is_file():
+            raise FileNotFoundError(
+                f"Clean palette reference not found: {palette_reference_path}"
+            )
+        with Image.open(palette_reference_path) as reference_source:
+            palette_reference = reference_source.convert("RGBA")
+
     scale = output_scale or SPECS[asset_type]["scale"]
+    resolved_view = DEFAULT_VIEWS[asset_type] if view == "auto" else view
     if frame_count == 1:
         return run_static_harness(
             asset_type,
@@ -499,12 +735,21 @@ def run_harness(
             project_root,
             theme,
             scale,
+            resolved_view,
+            palette_reference,
+            palette_reference_path,
+            style_profile,
+            style_profile_path,
         )
 
     resolved_columns = columns or frame_count
     if resolved_columns < 1 or resolved_columns > frame_count:
         raise ValueError("Columns must be between 1 and the frame count")
-    resolved_anchor = "bottom-center" if anchor == "auto" and asset_type == "char" else anchor
+    resolved_anchor = (
+        "bottom-center"
+        if anchor == "auto" and asset_type in {"char", "object"}
+        else anchor
+    )
     if resolved_anchor == "auto":
         resolved_anchor = "none"
     return run_animation_harness(
@@ -520,6 +765,11 @@ def run_harness(
         fps,
         resolved_anchor,
         playback,
+        resolved_view,
+        palette_reference,
+        palette_reference_path,
+        style_profile,
+        style_profile_path,
     )
 
 
@@ -536,11 +786,33 @@ def parse_args() -> argparse.Namespace:
         help="Visual theme preset (default: fantasy)",
     )
     parser.add_argument(
+        "--view",
+        choices=("auto", *VIEWS),
+        default="auto",
+        help="Orthographic 2D view; auto uses side except front-facing icons",
+    )
+    parser.add_argument(
+        "--palette-reference",
+        default=None,
+        help=(
+            "Clean PNG filename whose colors should influence the asset palette; "
+            "use the target background for scene-bound characters and objects"
+        ),
+    )
+    parser.add_argument(
+        "--style-profile",
+        default="auto",
+        help=(
+            "Style profile name from .codex/context or the bundled profiles; "
+            "auto uses project dot-style.json then cinematic-sd.json, and none disables it"
+        ),
+    )
+    parser.add_argument(
         "--scale",
         type=int,
         choices=(1, 2, 4),
         default=None,
-        help="Output scale from the working grid (default: 4)",
+        help="Output scale from the working grid (default: asset specification)",
     )
     parser.add_argument(
         "--frames",
@@ -569,7 +841,7 @@ def parse_args() -> argparse.Namespace:
         "--anchor",
         choices=("auto", "bottom-center", "center", "none"),
         default="auto",
-        help="Auto uses bottom-center for characters and none otherwise",
+        help="Auto uses bottom-center for characters and objects, and none otherwise",
     )
     parser.add_argument(
         "--playback",
@@ -601,6 +873,9 @@ def main() -> int:
             args.fps,
             args.anchor,
             args.playback,
+            args.view,
+            args.palette_reference,
+            args.style_profile,
         )
     except (FileNotFoundError, OSError, ValueError) as error:
         print(f"[Harness Error] {error}", file=sys.stderr)

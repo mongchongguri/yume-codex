@@ -4,6 +4,7 @@ Apply the shared principles and then the section matching the requested asset ty
 
 ## Shared Principles
 
+- Use orthographic 2D projection and the selected view from [viewpoints.md](viewpoints.md).
 - Construct forms from deliberate pixel clusters rather than smooth painted transitions.
 - Use 3 to 5 clear value groups: deep edge or occlusion shadow, shadow, base color, light, and a small focal highlight.
 - Prefer selective outlines. Use deep navy, brown, plum, or a darker local color instead of surrounding every form with pure black.
@@ -14,12 +15,21 @@ Apply the shared principles and then the section matching the requested asset ty
 
 ## Characters
 
-- Use compact proportions with a slightly enlarged head while keeping the anatomy or creature type recognizable.
+- Default to a clean side-profile sprite suitable for left-right movement.
+- Default humanoid characters to SD proportions around 2.5 to 3 heads tall: enlarged head, compact torso, shortened limbs, and slightly oversized hands or footwear. Keep age, role, and anatomy recognizable, and follow an explicit request for different proportions.
 - Communicate personality through posture, eyebrows, mouth shape, clothing, equipment, fins, ears, tails, or other silhouette features instead of relying only on very large eyes.
 - Keep major facial features and pose readable at native size.
 - At a 64 x 64 working grid, use 1 to 2 pixel-wide edge details and remove features that collapse after normalization.
 - Reserve the brightest cluster for one or two focal areas such as eyes, wet skin, metal equipment, or facial highlights.
 - Avoid perfect bilateral symmetry unless it is essential to the design.
+
+## In-World Objects
+
+- Read [objects.md](objects.md) and apply its scene-matching, grounding, material, and variant-consistency rules.
+- Treat an object as part of the environment rather than as a floating catalog illustration or UI badge.
+- Match the receiving scene's palette roles, outline hues, light direction, cluster scale, and contrast range.
+- Keep a stable bottom-center anchor, readable function, and crisp contact edge at native size.
+- Reserve `icon` for inventory, HUD, menu, and ability art.
 
 ## Environments
 
@@ -32,6 +42,7 @@ Apply the shared principles and then the section matching the requested asset ty
 
 ## Cinematic Scenes
 
+- Keep architecture and the gameplay plane in orthographic side elevation. Build depth with layered overlap, value, color, and scale groups instead of converging perspective lines.
 - Use the dedicated `scene` asset type for full-screen, panoramic, or side-scrolling environments.
 - Read [cinematic-scenes.md](cinematic-scenes.md) and apply its composition, lighting, detail-density, and gameplay-readability rules.
 - Keep `bg` for compact backgrounds, textures, and seamless tiles.
