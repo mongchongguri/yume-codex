@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Add a bundled `dot-image` skill for generating and validating low-fantasy pixel-art game assets.
+- Add a Pillow harness that enforces fixed pixel grids, nearest-neighbor output, compact palettes, binary transparency, and processing logs.
+- Add selectable `fantasy`, `sci-fi`, `modern`, `cute`, and `horror` theme presets, with `fantasy` as the default.
+- Make cute, charming chibi styling the shared art direction across every `dot-image` theme and brighten the harness palette presets accordingly.
+- Replace the global cute-chibi direction with expressive modern pixel-art guidance for deliberate clusters, selective outlines, richer contrast, and layered environments.
+- Add asset-specific art-direction guidance and tighter character and icon palette limits to reduce glossy mobile-style rendering.
+- Extend the `dot-image` harness with sprite-sheet splitting, frame alignment, shared animation palettes, configurable output scale, individual frame exports, and animation manifests.
+- Add a high-density `scene` asset type with aspect-preserving crops and cinematic side-scrolling environment guidance.
+
 ## 0.1.12
 
 - Add a bundled `planning` skill for creating and updating `.codex/context/description.md` project plans.
