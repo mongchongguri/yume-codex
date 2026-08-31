@@ -7,24 +7,26 @@ Style profiles keep independently generated assets inside one durable art direct
 The default `--style-profile auto` resolves in this order:
 
 1. `.codex/context/dot-style.json` in the target project
-2. Bundled `references/profiles/cinematic-sd.json`
+2. Bundled `references/profiles/soft-modern-retro.json`
 
 Pass a plain JSON filename to choose another project or bundled profile. Pass `--style-profile none` only when the user explicitly wants an unprofiled experiment.
 
-## Default `cinematic-sd`
+## Default `soft-modern-retro`
 
 The bundled profile defines:
 
 - Orthographic 2D side-scrolling presentation
-- Humanoid SD proportions around 2.5 to 3 heads tall
+- Friendly humanoid SD proportions around 2.5 to 3 heads tall
 - Chunky clusters and 1-to-2-pixel sprite outlines at the 64x64 grid
-- Deep navy and plum ambient shadows
-- Weathered brown, brick, stone, metal, cloth, glass, water, and plant materials
-- Restrained amber, coral, cream, teal, and olive focal accents
+- Soft blue-gray and cocoa ambient shadows
+- Painted wood and metal, warm brick, terrazzo, laminate, woven cloth, glass, ceramic, and grouped plant materials
+- Warm cream foundations with dusty coral, mustard, sage, teal, denim, and quiet neutral accents
 - Three to five major value groups and selective deep-colored outlines
 - A reusable fixed candidate palette rather than colors sampled from one background
 
-Read `prompt_terms`, the asset-specific fields, and the palette roles from [profiles/cinematic-sd.json](profiles/cinematic-sd.json) before generating. Translate them into direct visual prompt language while preserving the user's subject and theme.
+Read `prompt_terms`, the asset-specific fields, and the palette roles from [profiles/soft-modern-retro.json](profiles/soft-modern-retro.json) before generating. Translate them into direct visual prompt language while preserving the user's subject and theme.
+
+The previous [profiles/cinematic-sd.json](profiles/cinematic-sd.json) remains available for explicitly requested cinematic fantasy sets.
 
 ## Project Override
 

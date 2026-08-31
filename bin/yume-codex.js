@@ -61,6 +61,7 @@ const REQUIRED_PATHS = [
   ".codex/skills/dot-image/references/scene-integration.md",
   ".codex/skills/dot-image/references/style-profiles.md",
   ".codex/skills/dot-image/references/profiles/cinematic-sd.json",
+  ".codex/skills/dot-image/references/profiles/soft-modern-retro.json",
   ".codex/skills/dot-image/references/themes.md",
   ".codex/skills/dot-image/references/viewpoints.md",
   ".codex/skills/dot-image/scripts/dot_harness.py",

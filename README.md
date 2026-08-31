@@ -320,13 +320,13 @@ Safety:
 
 ### `/dot-image`
 
-Generates expressive modern pixel-art characters, in-world objects, animation sheets, cinematic side-scrolling scenes, layered backgrounds, and icons, then normalizes them with a deterministic Pillow harness. The default theme is `fantasy`; selectable presets are `sci-fi`, `modern`, `cute`, and `horror`.
+Generates expressive modern pixel-art characters, in-world objects, animation sheets, cinematic side-scrolling scenes, layered backgrounds, and icons, then normalizes them with a deterministic Pillow harness. The default theme is `soft-modern-retro`; selectable alternatives are `fantasy`, `sci-fi`, `modern`, `cute`, and `horror`.
 
 Main behavior:
 
 - Save generated source PNG files to `src/assets/raw/`.
-- Apply the requested theme, or `fantasy` when the theme is omitted.
-- Apply the reusable `cinematic-sd` style profile by default, or a project `.codex/context/dot-style.json` override, so independently generated assets retain one palette family and pixel language.
+- Apply the requested theme, or `soft-modern-retro` when the theme is omitted.
+- Apply the reusable `soft-modern-retro` style profile by default, or a project `.codex/context/dot-style.json` override, so independently generated assets retain one palette family and pixel language. The previous `cinematic-sd.json` profile remains selectable for explicit cinematic fantasy work.
 - Use deliberate pixel clusters, distinctive silhouettes, selective colored outlines, rich cool shadows, and focused warm highlights.
 - Default humanoid characters to readable 2.5-to-3-head SD proportions unless another proportion is requested.
 - Apply separate character, object, environment, and icon rules so atmospheric scenery can retain depth without softening gameplay sprites or world props.
@@ -348,7 +348,7 @@ Output sizes:
 - Cinematic scene: `640x360` working grid to `1280x720` output.
 - Icon: `32x32` working grid to `128x128` output.
 
-Use `$dot-image` explicitly or request a pixel-art game asset. `--style-profile auto` uses project `.codex/context/dot-style.json` when present and otherwise the bundled `cinematic-sd` profile; `none` disables it for explicit experiments. Select a preset with `--theme <fantasy|sci-fi|modern|cute|horror>`; omitting it selects `fantasy`. Select an orthographic viewpoint with `--view <side|front|top-down>`; omitting it uses the asset default. Use `--scale 1` for native working-grid output. Animation mode is enabled with `--frames <count>` and supports `--columns`, `--animation`, `--fps`, `--anchor`, and `--playback`. Pillow must be available to run the script.
+Use `$dot-image` explicitly or request a pixel-art game asset. `--style-profile auto` uses project `.codex/context/dot-style.json` when present and otherwise the bundled `soft-modern-retro` profile; `none` disables it for explicit experiments. Select a preset with `--theme <soft-modern-retro|fantasy|sci-fi|modern|cute|horror>`; omitting it selects `soft-modern-retro`. Select an orthographic viewpoint with `--view <side|front|top-down>`; omitting it uses the asset default. Use `--scale 1` for native working-grid output. Animation mode is enabled with `--frames <count>` and supports `--columns`, `--animation`, `--fps`, `--anchor`, and `--playback`. Pillow must be available to run the script.
 
 For a shared scene palette, add `--palette-reference <clean-background>.png` when processing a character or object variant. Compose verified assets without generative redesign using `.codex/skills/dot-image/scripts/scene_compositor.py`; layer coordinates and heights use background working-grid pixels and are recorded in a `.composition.json` manifest.
 

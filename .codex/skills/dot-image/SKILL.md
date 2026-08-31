@@ -1,6 +1,6 @@
 ---
 name: dot-image
-description: Generate and integrate expressive pixel-art characters, world objects, animations, scenes, backgrounds, and icons as PNG assets, then enforce true pixel-grid output with the bundled harness. Use for dot art, game sprites, scene-matched asset sets, composition previews, sprite sheets, layered environments, or pixel-art icons. Defaults to fantasy when no theme is specified.
+description: Generate and integrate expressive pixel-art characters, world objects, animations, scenes, backgrounds, and icons as PNG assets, then enforce true pixel-grid output with the bundled harness. Use for dot art, game sprites, scene-matched asset sets, composition previews, sprite sheets, layered environments, or pixel-art icons. Defaults to soft modern-retro when no theme is specified.
 ---
 
 # Dot Image
@@ -10,7 +10,7 @@ Generate a raster asset or animation sheet, apply the selected visual theme, nor
 ## Style Profile
 
 - Load the reusable style profile before composing any generation prompt. Read [references/style-profiles.md](references/style-profiles.md) and the resolved profile JSON.
-- `auto` uses a project `.codex/context/dot-style.json` when present, otherwise the bundled `cinematic-sd` profile.
+- `auto` uses a project `.codex/context/dot-style.json` when present, otherwise the bundled `soft-modern-retro` profile.
 - Treat the profile as the long-term source of truth for proportions, palette roles, outline language, pixel density, values, materials, and lighting. A background reference is only an optional scene-specific adjustment.
 - Pass the resolved profile to the harness with `--style-profile`; omission uses `auto`.
 
@@ -46,8 +46,9 @@ The listed final sizes use each asset's default scale: `4x` for `char`, `object`
 ## Theme Selection
 
 - Apply themes inside the resolved style profile. Themes must not replace its proportions, cluster language, value structure, or base palette family.
-- Use `fantasy` when the user does not specify a theme.
-- Built-in themes are `fantasy`, `sci-fi`, `modern`, `cute`, and `horror`.
+- Use `soft-modern-retro` when the user does not specify a theme.
+- Built-in themes are `soft-modern-retro`, `fantasy`, `sci-fi`, `modern`, `cute`, and `horror`.
+- Use `fantasy` with `--style-profile cinematic-sd.json` when the user explicitly requests the previous cinematic fantasy direction.
 - Follow an explicit user choice. Do not silently replace it with the default.
 - Read [references/themes.md](references/themes.md) for the selected theme's prompt direction and harness behavior.
 
@@ -67,13 +68,13 @@ The listed final sizes use each asset's default scale: `4x` for `char`, `object`
 ## Workflow
 
 1. Identify the asset type as `char`, `object`, `bg`, `scene`, or `icon`. Use `object` for props, furniture, plants, pickups, containers, fixtures, and environmental interactables; reserve `icon` for UI inventory or HUD art. If the request is ambiguous, infer it from the intended game use when safe.
-2. Select the theme. Use the user's explicit choice or `fantasy` when omitted.
+2. Select the theme. Use the user's explicit choice or `soft-modern-retro` when omitted.
 3. Select the supported 2D view. Use the asset default unless the user explicitly requests `side`, `front`, or `top-down`.
 4. Inspect the project for existing naming and asset conventions. Use a descriptive kebab-case PNG filename.
 5. Build the generation prompt from the user's subject, the resolved reusable style profile, the orthographic 2D viewpoint, the selected theme, the relevant asset-specific rules, and every required prompt term for the selected asset type. Describe visual properties directly; do not request a copy of an existing game's characters, UI, logo, or proprietary assets.
 6. Generate one raster PNG with the available image-generation capability. For animation mode, generate one evenly divided sprite sheet following [references/animation.md](references/animation.md). Prefer `$generate2dsprite` when it is installed. Do not substitute SVG, CSS, emoji, or an icon library.
 7. Save the unprocessed static image or sprite sheet to `src/assets/raw/<filename>.png`. Create the directory when needed.
-8. Run the bundled harness from the project root. The `--theme` option may be omitted only for the default `fantasy` theme. The `--view` option may be omitted only when the asset default is intended:
+8. Run the bundled harness from the project root. The `--theme` option may be omitted only for the default `soft-modern-retro` theme. The `--view` option may be omitted only when the asset default is intended:
 
    ```bash
    python .codex/skills/dot-image/scripts/dot_harness.py <char|object|bg|scene|icon> <filename>.png --style-profile auto --theme <theme> --view <side|front|top-down>

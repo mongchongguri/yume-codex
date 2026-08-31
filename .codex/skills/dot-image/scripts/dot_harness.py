@@ -23,6 +23,11 @@ SPECS = {
 }
 
 THEMES = {
+    "soft-modern-retro": {
+        "rgb": (1.03, 1.01, 0.97),
+        "lift": 7,
+        "palette_scale": 1.05,
+    },
     "fantasy": {"rgb": (1.02, 0.98, 0.92), "lift": 4, "palette_scale": 1.00},
     "sci-fi": {"rgb": (0.90, 1.02, 1.10), "lift": 2, "palette_scale": 1.10},
     "modern": {"rgb": (1.00, 1.00, 1.00), "lift": 4, "palette_scale": 1.00},
@@ -40,7 +45,7 @@ DEFAULT_VIEWS = {
     "scene": "side",
     "icon": "front",
 }
-DEFAULT_STYLE_PROFILE = "cinematic-sd.json"
+DEFAULT_STYLE_PROFILE = "soft-modern-retro.json"
 BUNDLED_PROFILE_DIR = Path(__file__).resolve().parent.parent / "references" / "profiles"
 
 
@@ -667,7 +672,7 @@ def run_harness(
     asset_type: str,
     filename: str,
     project_root: Path,
-    theme: str = "fantasy",
+    theme: str = "soft-modern-retro",
     output_scale: int | None = None,
     frame_count: int = 1,
     columns: int | None = None,
@@ -782,8 +787,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--theme",
         choices=sorted(THEMES),
-        default="fantasy",
-        help="Visual theme preset (default: fantasy)",
+        default="soft-modern-retro",
+        help="Visual theme preset (default: soft-modern-retro)",
     )
     parser.add_argument(
         "--view",
@@ -804,7 +809,7 @@ def parse_args() -> argparse.Namespace:
         default="auto",
         help=(
             "Style profile name from .codex/context or the bundled profiles; "
-            "auto uses project dot-style.json then cinematic-sd.json, and none disables it"
+            "auto uses project dot-style.json then soft-modern-retro.json, and none disables it"
         ),
     )
     parser.add_argument(

@@ -14,6 +14,7 @@
 - Add a dedicated `object` asset type with scene-matched art-direction rules, 2D side-view defaults, isolation-background cleanup, and stable animation anchoring.
 - Add scene integration with SD-character defaults, background-influenced palette linking, and a deterministic nearest-neighbor compositor that records working-grid placement manifests.
 - Add a reusable default `cinematic-sd` style profile with prompt terms and a fixed candidate palette, plus project-level profile overrides so new assets stay cohesive without an existing background.
+- Change the `dot-image` default to a soft modern-retro theme and bundled profile with warm cream, dusty coral, mustard, sage, teal, denim, and gentle cool-shadow palette roles; retain cinematic fantasy as an explicit option.
 
 ## 0.1.12
 
