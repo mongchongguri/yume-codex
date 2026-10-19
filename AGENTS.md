@@ -1,6 +1,6 @@
 # Project Agent Guide
 
-Always read the project harness documents before making changes.
+Read the project harness documents relevant to the task before making changes.
 
 
 ## Reporting Rules
@@ -12,7 +12,9 @@ Follow the reporting workflow for work start, progress updates, and completion r
 
 ## Project Context
 
-Read the project description before making implementation decisions.
+Read the project description when the task depends on project purpose, scope, requirements, architecture, or technical direction. For self-contained bug fixes, copy edits, styling adjustments, and refactors that preserve behavior, use the request and nearby code unless project context is needed to resolve uncertainty.
+
+Reuse relevant context already available in the conversation. When more context is needed, locate and read the relevant sections first; read the full document only when broader context is necessary. Routine implementation work does not require updating planning documents unless the user requests it or project requirements change.
 
 
 - `.codex/context/description.md`
@@ -31,6 +33,7 @@ Use the shared rules for comments, reporting, and general coding conventions.
 - TypeScript only: `.codex/common/rules/typescript.md`
 - Version selection: `.codex/common/rules/versioning.md`
 - Encoding and text integrity: `.codex/common/rules/encoding.md`
+- User-facing text in projects using i18n: `.codex/common/rules/i18n.md`
 - Build progress reporting: `.codex/common/rules/build-progress.md`
 - Frontend decisions: `.codex/common/rules/frontend-decisions.md`
 - Responsive CSS: `.codex/common/rules/frontend/responsive-css.md`

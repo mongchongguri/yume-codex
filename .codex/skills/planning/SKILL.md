@@ -1,6 +1,6 @@
 ---
 name: planning
-description: Create and maintain project planning documents for Codex-managed projects. Use when the user asks to plan a new project, turn a project idea into a planning Markdown file, write or update .codex/context/description.md, revise an existing project plan, or record planning changes in .codex/context/update.md.
+description: Create or revise project plans when the user requests planning, requirements changes, or edits to .codex/context/description.md or .codex/context/update.md. Do not invoke for routine implementation, bug fixes, copy edits, styling, or behavior-preserving refactors that leave project requirements unchanged.
 ---
 
 # Planning
@@ -13,16 +13,18 @@ The primary planning file is `.codex/context/description.md`. When changing an e
 
 ## Workflow
 
-1. Inspect the active project.
-   - Read `AGENTS.md` when present and follow its instructions.
-   - Read existing `.codex/context/description.md` when present.
-   - Read existing `.codex/context/update.md` when present and the task is an update.
-   - If `.codex/context/` does not exist but `context/` exists, ask whether the project intentionally uses `context/`; otherwise create `.codex/context/`.
-
-2. Classify the request.
+1. Classify the request before loading planning documents.
    - New plan: the user describes a project to build and no existing project plan should be preserved.
    - Plan update: the user asks to change, add, remove, refine, or correct requirements in an existing plan.
+   - Routine implementation without a requirements change: follow the applicable project rules without invoking this planning workflow or reading or updating planning documents solely because code is changing.
    - If the request is ambiguous and overwriting could lose useful context, ask one concise clarification before editing.
+
+2. Inspect only the necessary project context.
+   - Read `AGENTS.md` when present and follow its instructions.
+   - Reuse relevant context already available in the conversation instead of rereading unchanged documents.
+   - For a focused plan update, search existing `.codex/context/description.md` for relevant headings or terms and read the affected sections and dependencies. Read the full document when creating a replacement plan or making broad changes that require it.
+   - Read only relevant entries from `.codex/context/update.md` when earlier decisions affect the current update; appending a new entry does not require reading the entire log.
+   - If `.codex/context/` does not exist but `context/` exists, ask whether the project intentionally uses `context/`; otherwise create `.codex/context/`.
 
 3. Gather only necessary details.
    - Make reasonable assumptions for low-risk gaps and label them in the plan.

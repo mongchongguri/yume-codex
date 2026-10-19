@@ -374,6 +374,8 @@ Main behavior:
 - Use `.codex/context/description.md` as the source of truth for project purpose, users, goals, requirements, technical direction, phases, risks, and open questions.
 - Update an existing plan in place when requirements change.
 - Record what changed in `.codex/context/update.md` when updating an existing plan.
+- Routine implementation, bug fixes, copy edits, styling, and behavior-preserving refactors do not activate planning unless requirements change or the user requests a plan edit.
+- Reuse available context and read relevant planning sections first; load the full description only when broader context is needed.
 
 ### `/reference`
 

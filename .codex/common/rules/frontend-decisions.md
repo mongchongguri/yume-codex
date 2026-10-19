@@ -21,6 +21,7 @@ When adding this harness to an existing project, treat the existing codebase as 
 - Responsive CSS: `.codex/common/rules/frontend/responsive-css.md`
 - Calendars and date pickers: `.codex/common/rules/frontend/calendar.md`
 - Icons: `.codex/common/rules/frontend/icons.md`
+- User-facing text in projects using i18n: `.codex/common/rules/i18n.md`
 - Decision reporting: `.codex/common/rules/frontend/reporting.md`
 
 
